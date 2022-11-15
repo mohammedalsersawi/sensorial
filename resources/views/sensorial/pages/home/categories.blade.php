@@ -37,76 +37,7 @@
             </div>
         </div>
     </section>
-    <!-- section 1 -->
 
-    <!-- section 2 -->
-    <section class="section-2 section-2-private mt-5 text-center">
-        <div class="container">
-            <h1 lng-tag="begins">Here begins your journey from <br>knowledge to work</h1>
-            <p lng-tag="devices">All devices come with free delivery or pickup as standard. See<br> information on
-                available
-                shopping options
-                for your location.</p>
-            <div class="row">
-@foreach($biographyGroup as $item)
-
-                    <div class="col-md-6 col-lg-4">
-                        <div class="box">
-                            <div class="diamond "></div>
-                            <img src="{{ asset('requirement/pages/img/search.png') }}" alt="" class="img-fluid search">
-                            <h5 lng-tag="Discover">{{$item->title}} </h5>
-                            <p lng-tag="devices-1">{{$item->dest}}</p>
-                        </div>
-                    </div>
-
-                @endforeach
-            </div>
-        </div>
-    </section>
-    <!-- section 2 -->
-
-    <!-- section 3 -->
-    <section class="section-3 section-2-private mt-5 pt-5">
-        <div class="container">
-            <h1 class="text-center" lng-tag="begins">Here begins your journey from<br>knowledge to work</h1>
-            <p class="text-center" lng-tag="devices">All devices come with free delivery or pickup as standard.
-                See<br>
-                information on available
-                shopping options for your location.</p>
-            <div class="row align-items-center mt-5">
-                <div class="col-sm-6 col-md mt-5 text-center text-md-start">
-                    <div class="Number margin">
-                        <span>{{$arr[0]}}</span>
-                        <p lng-tag="Available">Available <br>Course</p>
-                    </div>
-                    <div class="Number">
-                        <span>{{$arr[1]}}</span>
-                        <p lng-tag="Number">Number of<br>Student</p>
-                    </div>
-
-                </div>
-                <div class="col-sm-6 col-md mt-5  text-center text-md-start">
-                    <div class="Number margin">
-                        <span>2000+</span>
-                        <p lng-tag="positive">positive<br> Feedback</p>
-                    </div>
-                    <div class="Number">
-                        <span>{{$arr[2]}}</span>
-                        <p lng-tag="set">set of<br>categories</p>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="image position-relative">
-                        <img src="{{ asset('requirement/pages/img/man-wemon.png') }}" alt=""
-                            class="img-fluid img-1">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- section 3 -->
-
-    <!-- section 4 -->
     <section class="section-4 section-2-private">
         <div class="container">
             <h1 class="text-center" lng-tag="Top Category">Top Category </h1>
@@ -128,93 +59,13 @@
                     </div>
                 @endforeach
             </div>
-            <div class="arrow" dir="ltr">
-                <a href="{{route('CategoriesShow')}}" lng-tag="Browse all">Browse all
-                    <i class="fa-solid fa-arrow-right"></i>
-                </a>
-            </div>
+
         </div>
     </section>
     <!-- section 4 -->
 
     <!-- section 5 -->
-    <section class="section-5 section-2-private">
-        <div class="container position-relative">
-            <svg xmlns="http://www.w3.org/2000/svg" width="23.905" height="21.105" viewBox="0 0 23.905 21.105">
-                <defs>
-                    <symbol id="heart" viewBox="0 0 23.905 21.105">
-                        <path class="heart-box" data-name="Icon feather-heart"
-                            d="M22.539,6.186a5.764,5.764,0,0,0-8.153,0L13.275,7.3,12.164,6.186a5.765,5.765,0,1,0-8.153,8.153L5.122,15.45,13.275,23.6l8.153-8.153,1.111-1.111a5.764,5.764,0,0,0,0-8.153Z"
-                            transform="translate(-1.323 -3.497)" fill="none" stroke="#9f007e" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="1" />
 
-                    </symbol>
-
-                    <symbol id="heart-fill" viewBox="0 0 23.905 21.105">
-                        <path
-                            d="M22.539,6.186a5.764,5.764,0,0,0-8.153,0L13.275,7.3,12.164,6.186a5.765,5.765,0,1,0-8.153,8.153L5.122,15.45,13.275,23.6l8.153-8.153,1.111-1.111a5.764,5.764,0,0,0,0-8.153Z"
-                            fill="#9f007e" stroke="#9f007e" transform="translate(-1.323 -3.497)" fill="none"
-                            stroke="#9f007e" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
-                    </symbol>
-
-                </defs>
-            </svg>
-            <h1 class="text-center" lng-tag="Popular">Most Popular Courses</h1>
-            <p class="text-center" lng-tag="devices">All devices come with free delivery or pickup as standard.
-                See<br>
-                information on available
-                shopping options for your location.</p>
-
-            <div class="row mt-5 multiple-items" dir="ltr">
-                @foreach ($courses as $course)
-                    <div class="col-lg-4 col-md-6">
-                        <div class="box">
-                            <div class="image text-center">
-                                <a href="{{ route('courseShow', $course->id) }}">
-                                    <img src="{{ asset('requirement/uploads/course_photo/' . $course->course_photo) }}"
-                                        alt="" class="img-fluid width">
-                                </a>
-                            </div>
-                            <div class="content">
-                                <p class="fw-bold" style="text-transform: capitalize" lng-tag="Motion">
-                                    {{ $course->course_name }}<br>
-                                    {{ $course->course_detail }}</p>
-                                <p class="p1" style="text-transform: capitalize" lng-tag="Dorothy">By
-                                    {{ $course->instructor->name }}</p>
-                                <i class="fa-solid fa-star star"></i>
-                                <i class="fa-solid fa-star star"></i>
-                                <i class="fa-solid fa-star star"></i>
-                                <i class="fa-solid fa-star star"></i>
-                                <i class="fa-solid fa-star star"></i>
-
-                                <span class="num"><span class="number">5.0s</span>(+100k)</span>
-
-                                <div class="end-box position-relative">
-                                    <div class="heart-boxx">
-
-                                        <div id="icon">
-                                            <svg width="30" height="30" fill="currentColor">
-                                                <use href="#heart">
-                                                </use>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <i class="fa-solid fa-bars bar"></i>
-                                    <div class="end">
-                                        @if ($course->price)
-                                            <p class="pp-3">${{ $course->price->price }}</p>
-                                        @else
-                                            <p class="pp-3">Price not found</p>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
     <!-- section 5 -->
 
     <!-- section 6 -->

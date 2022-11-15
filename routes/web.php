@@ -81,6 +81,8 @@ Route::prefix('sensorial')->group(function () {
 
     // Home
     Route::get('home', [HomePageController::class, 'show'])->name('homeShow');
+    Route::get('home/Categories', [HomePageController::class, 'CategoriesShow'])->name('CategoriesShow');
+
 
 
     // My_Profile
