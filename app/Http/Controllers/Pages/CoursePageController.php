@@ -30,7 +30,7 @@ class CoursePageController extends Controller
 
     public function all()
     {
-        $like=Like::where('user_id',Auth::id())->pluck('course_id')->toArray();;
+        $like=Like::where('user_id',Auth::id())->pluck('course_id')->toArray();
         $courses = Course::all();
         if(auth()->user()){
             $user = auth()->user()->id;
@@ -57,7 +57,7 @@ class CoursePageController extends Controller
     public function showlike(){
 
         $like=Like::where('user_id',Auth::id())->pluck('course_id')->toArray();
-        $courses=Course::whereIn('id',$like)->get();
+        $courses=Course::whereIn('id',$like)->latest()->get();
 
         return view('sensorial.pages.course.courses', compact('courses','courses','like'));
     }

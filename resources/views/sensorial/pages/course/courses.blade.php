@@ -169,7 +169,7 @@
                                 <div class="icon">
 {{--<form id="formlike"  method="post" action="{{route('courseLike')}}">--}}
 {{--    <input id="inputlike{{$course->id}}" name="like" type="hidden" value="">--}}
-
+@auth()
     <button onclick="like({{$course->id}})"  class="svg-1">
         <div id="icon">
             <svg class="svg-1" width="30" height="30" fill="currentColor">
@@ -179,6 +179,7 @@
             </svg>
         </div>
     </button>
+                                    @endauth
 
 {{--</form>--}}
 
