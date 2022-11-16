@@ -108,7 +108,7 @@
 
     <!-- section 4 -->
     <section class="section-4 section-2-private">
-        <div class="container">
+      <a>  <div class="container">
             <h1 class="text-center" lng-tag="Top Category">Top Category </h1>
             <p class="text-center" lng-tag="devices">All devices come with free delivery or pickup as standard.
                 See<br>
@@ -118,22 +118,24 @@
                 @foreach ($categories as $category)
                     <div class="col-lg-4 col-md-6">
                         <div class="box">
-                            <img src="{{ asset('requirement/uploads/category_photo/' . $category->category_photo) }}"
-                                alt=""  width="100" height="100">
+                           <img src="{{ asset('requirement/uploads/category_photo/' . $category->category_photo) }}"
+                            alt=""  width="100" height="100">
                             <span lng-tag="Design" style="text-transform: capitalize">{{ $category->category_name }}</span>
                             <p class="mt-3" style="text-transform: capitalize" lng-tag="devices-1">
                                 {{ $category->category_details }}.</p>
-                            <i class="fa-solid fa-arrow-right"></i>
+                          <a href="{{route('categorcourseyShow',$category->id)}}">  <i class="fa-solid fa-arrow-right"></i></a>
                         </div>
                     </div>
                 @endforeach
             </div>
+
+      </a>
             <div class="arrow" dir="ltr">
-                <a href="{{route('CategoriesShow')}}" lng-tag="Browse all">Browse all
+                <a href="{{route('categoryShow')}}" lng-tag="Browse all">Browse all
                     <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
-        </div>
+
     </section>
     <!-- section 4 -->
 

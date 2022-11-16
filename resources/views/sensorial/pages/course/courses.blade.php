@@ -25,7 +25,7 @@
                     <symbol id="heart-fill" viewBox="0 0 23.905 21.105">
                         <path
                             d="M22.539,6.186a5.764,5.764,0,0,0-8.153,0L13.275,7.3,12.164,6.186a5.765,5.765,0,1,0-8.153,8.153L5.122,15.45,13.275,23.6l8.153-8.153,1.111-1.111a5.764,5.764,0,0,0,0-8.153Z"
-                            fill="#9f007e" stroke="#9f007e" transform="translate(-1.323 -3.497)" fill="none"
+                            fill="#9f007e"stroke="#9f007e" transform="translate(-1.323 -3.497)" fill="none"
                             stroke="#9f007e" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" />
                     </symbol>
 
@@ -111,13 +111,38 @@
                                 <p class="p1" lng-tag="Dorothy" style="text-transform: capitalize">By
                                     <u>{{ $course->instructor->name }}</u>
                                 </p>
-                                <span class="number">4.5</span>
 
-                                <i class="fa-solid fa-star star"></i>
-                                <i class="fa-solid fa-star star"></i>
-                                <i class="fa-solid fa-star star"></i>
-                                <i class="fa-solid fa-star star"></i>
-                                <i class="fa-solid fa-star star"></i>
+                                <span class="number">({{ $course->rate }})</span>
+
+
+                                    @php
+                                        $rating = $course->rate;
+                                        $starcount =floor($rating);
+                                        $fraction = $rating - $starcount;
+                                    @endphp
+                                    @foreach (range(1,$starcount) as $i)
+                                        <i class="fa-solid fa-star star"></i>
+                                    @endforeach
+
+                                    @if ($fraction == 0)
+                                        <i class="fa-solid fa-star"></i>
+                                    @elseif ($fraction > 0.5)
+                                        <i class="fa-solid fa-star star"></i>
+                                    @else
+                                        <i class="fa-solid fa-star"></i>
+                                    @endif
+                                @if($starcount != 4)
+
+                                    @foreach (range(1, 4 - $starcount) as $i)
+                                        <i class="fa-solid fa-star "></i>
+                                    @endforeach
+                                @elseif($starcount != 4 && $starcount<0.5)
+                                    <i class="fa-solid fa-star "></i>
+
+                                @endif
+
+
+
 
                                 <span class="num"><span class="number"></span>(+100k)</span>
                                 <ul>
@@ -142,13 +167,21 @@
                                 @endif
 
                                 <div class="icon">
+{{--<form id="formlike"  method="post" action="{{route('courseLike')}}">--}}
+{{--    <input id="inputlike{{$course->id}}" name="like" type="hidden" value="">--}}
 
-                                    <div id="icon">
-                                        <svg class="svg-1" width="30" height="30" fill="currentColor">
-                                            <use href="#heart">
-                                            </use>
-                                        </svg>
-                                    </div>
+    <button onclick="like({{$course->id}})"  class="svg-1">
+        <div id="icon">
+            <svg class="svg-1" width="30" height="30" fill="currentColor">
+                <use  href="{{ (in_array( $course->id, $like))?'#heart-fill':'#heart'}}">
+                </use>
+
+            </svg>
+        </div>
+    </button>
+
+{{--</form>--}}
+
                                 </div>
                             </div>
                         </div>
@@ -171,4 +204,27 @@
     <script src="{{ asset('requirement/pages/js/Script-4.js') }}"></script>
     <script src="{{ asset('requirement/pages/js/index.js') }}"></script>
 
+    <script>
+    function like(id){
+        // $('#formlike').submit(function(e){
+     // const like=$('#inputlike'+id).val('1');
+    $.ajax({
+    type : 'post',
+    url  : '{{route('courseLike')}}',
+    data : {
+    _token:'{{csrf_token()}}',
+     // like:like,
+     course:id
+    },
+    success: function(res) {
+       $('#inputlike'+id).val('0');
+    },
+    error: function (data) {
+    console.log('Error:', data);
+    }
+    })
+    }
+        // )}
+
+    </script>
 @endsection

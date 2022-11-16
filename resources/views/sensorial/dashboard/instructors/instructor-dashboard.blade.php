@@ -3,7 +3,7 @@
 @section('content')
 		<!-- Main Wrapper -->
         <div class="main-wrapper">
-		
+
 			<!-- Loader -->
 			<div id="loader-wrapper">
 				<div id="loader">
@@ -16,9 +16,9 @@
 				</div>
 			</div>
 			<!-- /Loader -->
-		
 
-				
+
+
 				<!-- Page Content -->
                 <div class="content container-fluid">
 					<div class="row">
@@ -34,7 +34,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="row">
 						<div class="col-lg-8 col-md-8">
 							<section class="dash-section">

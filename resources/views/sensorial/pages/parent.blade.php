@@ -178,7 +178,7 @@ if (auth()->user()) {
                                 </div>
 
                                 <div class="heart-1 position-relative">
-                                    <a href="{{ route('viewWishlist') }}">
+                                    <a href="{{route('likecourseShow')}}">
                                         <svg class="heart" xmlns="http://www.w3.org/2000/svg"
                                             xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1"
                                             x="0px" y="0px" viewBox="0 0 490.4 490.4"

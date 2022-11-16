@@ -114,7 +114,10 @@ Route::prefix('sensorial')->group(function () {
     // Categories
     Route::prefix('category')->group(function () {
         Route::get('/', [CategoryPageController::class, 'show'])->name('categoryShow');
+        Route::get('{id}', [CategoryPageController::class, 'ShowCourseCategory'])->name('categorcourseyShow');
+
     });
+
 
     // about_us
     Route::get('about_us', [About_UsController::class, 'index'])->name('about_us');
@@ -138,8 +141,10 @@ Route::prefix('sensorial')->group(function () {
     Route::prefix('course')->group(function () {
         Route::get('/', [CoursePageController::class, 'all'])->name('coursesShow');
         Route::get('{id}', [CoursePageController::class, 'show'])->name('courseShow');
-    });
 
+    });
+    Route::get('like/courses', [CoursePageController::class, 'showlike'])->name('likecourseShow');
+    Route::post('like/courses', [CoursePageController::class, 'postlike'])->name('courseLike');
     // Cart
     Route::prefix('cart')->group(function () {
         Route::post('/', [CartPageController::class, 'addToCart'])->name('addToCart');
