@@ -219,6 +219,8 @@ Route::prefix('sensorial')->group(function () {
             Route::resource('option', OptionController::class);
 
             Route::resource('lecture', LectureController::class);
+            Route::get('classes/{id}', [LectureController::class , 'getclasses'])->name('getclasses');
+
 
             Route::resource('learn', LearnController::class);
 

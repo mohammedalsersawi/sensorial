@@ -3,6 +3,7 @@
 @section('title', 'Lectures')
 
 @section('styles')
+@toastr_css
 
     <link rel="stylesheet" href="{{ asset('requirement/assets/css/bootstrap.min.css') }}">
 
@@ -11,7 +12,7 @@
 
     <!-- Datetimepicker CSS -->
     <link rel="stylesheet" href="{{ asset('requirement/assets/css/bootstrap-datetimepicker.min.css') }}">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 @endsection
 
 @section('big-title', 'Lectures')
@@ -122,7 +123,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="well form-horizontal" id="contact_form">
+                    <form class="well form-horizontal" action="{{ route('lecture.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-xl-12">
@@ -133,21 +134,44 @@
                                             name="lecture_name" id="lecture_name" type="text" class="form-control">
                                     </div>
                                 </div>
+
                                 <div class="form-group row">
-                                    <label class="col-lg-3 col-form-label">Section Name</label>
+                                    <label class="col-lg-3 col-form-label">Course Name</label>
                                     <div class="col-lg-9">
-                                        <select id="section_id" name="section_id" class="select select2-hidden-accessible">
-                                            <option selected disabled>Add to Section</option>
-                                            @foreach ($sections as $section)
-                                                <option value="{{ $section->id }}">{{ $section->section_name }}</option>
+                                        <select id="course_id" name="course_id" class="form-control onchange="console.log($(this).val())">
+                                            <option selected disabled>select Course</option>
+                                            @foreach ($courses as $course)
+                                                <option value="{{ $course->id }}">{{ $course->course_name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Course Name</label>
+                                    <div class="col-lg-9">
+                                        <select id="section_id" name="section_id" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                                {{-- <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Section Name</label>
+                                    <div class="col-lg-9">
+                                        <select id="section_id" name="section_id" class="select select2-hidden-accessible">
+                                            <option selected disabled>Add to Section</option>
+                                            <option selected disabled>Add to Section</option>
+                                            <option selected disabled>Add to Section</option>
+
+                                            <option value="11"> lmkmdskmvsdk
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                </div> --}}
+
+                                <div class="form-group row">
                                     <label class="col-lg-3 col-form-label">Lecture Video</label>
                                     <div class="col-lg-9">
-                                        <input name="video" id="video" type="file">
+                                        <input name="video" id="video" type="file" >
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -157,7 +181,7 @@
                                             type="text" placeholder="Enter Announcement" class="form-control">
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                {{-- <div class="form-group row">
                                     <label class="col-lg-3 col-form-label">Hours</label>
                                     <div class="col-lg-3">
                                         <input style="text-transform: capitalize" value="0" placeholder="Hours"
@@ -170,7 +194,7 @@
                                         <input style="text-transform: capitalize" value="0" placeholder="Minutes"
                                             name="minutes" id="minutes" type="number" class="form-control">
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="form-group row">
                                     <label class="col-lg-3 col-form-label">Details</label>
                                     <div class="col-lg-9">
@@ -180,7 +204,7 @@
                                 </div>
 
                                 <div class="form-group text-right">
-                                    <button type="button" class="btn btn-primary" onclick="store()">Create</button>
+                                    <button  class="btn btn-primary" onclick="store()">Create</button>
                                 </div>
                             </div>
                         </div>
@@ -196,6 +220,9 @@
 
 
 @section('scripts')
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@toastr_js
+            @toastr_render
 
     <script>
         function store() {
@@ -245,5 +272,31 @@
             }
         });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    $(document).ready(function() {
+        $('select[name="course_id"]').on('change', function() {
+            var course_id = $(this).val();
+            if (course_id) {
+                $.ajax({
+                    url: "{{ URL::to('sensorial/dashboard/classes') }}/" + course_id,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $('select[name="section_id"]').empty();
+                        $.each(data, function(key, value) {
+                            $('select[name="section_id"]').append('<option value="' +
+                                key + '">' + value + '</option>');
+                        });
+                        console.log(dataType);
+                    },
+                });
+            } else {
+                console.log('AJAX load did not work');
+            }
+        });
+    });
+</script>
 
 @endsection

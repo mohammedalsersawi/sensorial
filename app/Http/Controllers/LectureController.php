@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Lecture;
 use App\Models\Section;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class LectureController extends Controller
 {
@@ -19,7 +22,8 @@ class LectureController extends Controller
         //
         $lectures = Lecture::all();
         $sections = Section::all();
-        return view('sensorial.dashboard.lectures.index', compact('lectures', 'sections'));
+        $courses = Course::all();
+        return view('sensorial.dashboard.lectures.index', compact('lectures', 'sections' , 'courses'));
     }
 
     /**
@@ -40,7 +44,36 @@ class LectureController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'lecture_name' => 'required|string',
+            'section_id' => 'required',
+            'course_id' => 'required',
+            'video' => 'required',
+            'description' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        } else {
+
+            if ($video = $request->file('video')) {
+                $newfile =  Str::random(30) . '.' . $video->getClientOriginalName();
+                $Path = 'uploads/lecture/video';
+                $video->move($Path, $newfile);
+            }
+            $course =  Lecture::create([
+                'lecture_name' => $request->lecture_name,
+                'section_id' => $request->section_id,
+                'course_id' => $request->course_id,
+                'description' => $request->description,
+                'video' => $newfile,
+            ]);
+            toastr()->success(trans('messages.success'));
+            return redirect()->back();
+
+
+
+
+        /*
         $lecture = new Lecture();
         $validator = Validator($request->all(),[
             'lecture_name' => 'required|string',
@@ -76,7 +109,9 @@ class LectureController extends Controller
                 'message' => $validator->getMessageBag()->first()
             ], Response::HTTP_BAD_REQUEST);
         }
+        */
     }
+}
 
     /**
      * Display the specified resource.
@@ -160,5 +195,11 @@ class LectureController extends Controller
         } else {
             return response()->json(['icon' => 'error' ,'title' => 'Failed!' ,'text' => 'Deleted Failed ' ,],Response::HTTP_BAD_REQUEST);
         }
+    }
+    public function getclasses($id)
+    {
+        $list_sections = Section::where("course_id", $id)->pluck("section_name", "id");
+
+        return $list_sections;
     }
 }
