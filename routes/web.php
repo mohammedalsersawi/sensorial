@@ -80,7 +80,7 @@ Route::prefix('sensorial')->group(function () {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Home
-    Route::get('home', [HomePageController::class, 'show'])->name('homeShow');
+    Route::get('/home', [HomePageController::class, 'show'])->name('homeShow');
     Route::get('home/Categories', [HomePageController::class, 'CategoriesShow'])->name('CategoriesShow');
 
 
@@ -151,6 +151,9 @@ Route::prefix('sensorial')->group(function () {
         Route::get('/', [CartPageController::class, 'cartList'])->name('viewCart');
         Route::get('/{id}', [CartPageController::class, 'removeCartItem'])->name('removeItem');
     });
+    Route::get('checkout', [CartPageController::class, 'checkout'])->name('checkout');
+    Route::get('thanks', [MainController::class, 'thanks'])->name('site.thanks');
+
 
     // View Course
     Route::prefix('view-course')->group(function () {

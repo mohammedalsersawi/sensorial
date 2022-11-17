@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('curr');
-            $table->integer('cardnumber');
-            $table->integer('cardholder');
-            $table->integer('expirydate');
-            $table->integer('cvc');
+            $table->double('total');
+            $table->string('course_id');
+            $table->foreignId('user_id');
+            $table->foreignId('order_id');
+            $table->foreignId('payment_by');
             $table->timestamps();
         });
     }

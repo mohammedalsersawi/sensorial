@@ -25,8 +25,7 @@ class HomePageController extends Controller
       //  $users = DB::table('users')->count();
         $arr=[$CountCourses,$CountUsers,$CountCategories];
 
-
-        if(auth()->user()){
+ if(auth()->user()){
             $user = auth()->user()->id;
             $cart = Cart::where('user_id', '=', $user)->get();
             $count = Cart::where('user_id', $user)->count();
@@ -34,6 +33,7 @@ class HomePageController extends Controller
         } else {
             return view('sensorial.pages.home.home', compact('courses', 'categories','biography','biographyGroup','arr'));
         }
+
     }
 
         // $cartCourses = DB::table('cart')
