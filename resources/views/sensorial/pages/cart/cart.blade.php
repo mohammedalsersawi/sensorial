@@ -85,15 +85,27 @@
                                     </div>
                                     <div class="modal-body">
                                         <p class="h6" lng-tag="Choose how many months you want to pay the course fee">
-                                            <b>Choose how many months you want to pay the course fee</b></p>
-                                            <br>
-                                            <form action="{{ route('installments') }}" method="POST">
+                                            <b>Choose how many months you want to pay the course fee</b>
+                                        </p>
+                                        <br>
+                                        <form action="{{ route('installments') }}" method="POST" id="form">
                                             @csrf
-                                            <select class="custom-select" name="installment" id="">
-                                                <option disabled value="select" lng-tag="Select a duration">Select a duration</option>
-                                                <option value="3" lng-tag="Less than 1 Month">Less than 1 Month</option>
+                                            <select class="custom-select" name="installment" id="installment">
+                                                <option disabled value="select" lng-tag="Select a duration">Select a
+                                                    duration</option>
+                                                <option value="3" lng-tag="Less than 1 Month">Less than 1 Month
+                                                </option>
                                                 <option value="6" lng-tag="1 to 2 Month">1 to 2 Month</option>
                                                 <option value="9" lng-tag="1 to 6 Month">1 to 3 Month</option>
+                                            </select>
+                                            <br>
+                                            <br>
+                                            <select class="custom-select" name="course_id" id="course_id">
+                                                <option disabled value="select" lng-tag="Select a duration">Select a
+                                                    duration</option>
+                                                <option value="1" >1</option>
+                                                <option value="2" >2</option>
+                                                <option value="3" >3</option>
                                             </select>
 
 
@@ -101,18 +113,11 @@
                                     <div class="modal-footer">
                                         <button type="submit" class="form-control input-1">Go</button>
                                     </div>
-                                </form>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                        {{-- <p class="Promotions" lng-tag="Promotions">Promotions</p>
 
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control input-2" placeholder="Enter Coupon"
-                                aria-label="Recipient's username" aria-describedby="button-addon2">
-                            <button class="btn btn-outline-secondary apply" type="button" id="button-addon2"
-                                lng-tag="Apply">Apply</button>
-                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -140,6 +145,27 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"
         integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous">
+    </script>
+    <script>
+        $('select[name="installment"]').on('change', function(e) {
+            e.preventDefault();
+            var time_installment = $('#installment').val();
+            $.ajax({
+                url: "{{ URL::to('sensorial/thanksInstallment') }}/" + time_installment ,
+                type: "GET",
+                dataType: "json",
+            });
+        });
+        // $('select[name="course_id"]').on('change', function(e) {
+        //     e.preventDefault();
+        //     var course_id = $('#course_id').val();
+        //     alert(course_id);
+        //     $.ajax({
+        //         url: "{{ URL::to('sensorial/course_id') }}/" + course_id,
+        //         type: "GET",
+        //         dataType: "json",
+        //     });
+
     </script>
 
 @endsection

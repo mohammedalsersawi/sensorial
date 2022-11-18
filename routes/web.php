@@ -155,9 +155,10 @@ Route::prefix('sensorial')->group(function () {
     Route::get('checkout', [CartPageController::class, 'checkout'])->name('checkout');
     Route::get('thanks', [CartPageController::class, 'thanks'])->name('site.thanks');
     Route::post('installments', [CartPageController::class, 'checkout_installments'])->name('installments');
-    Route::get('thanksInstallment', [CartPageController::class, 'thanksInstallment'])->name('thanks.Installment');
+    Route::get('thanksInstallment/{count}', [CartPageController::class, 'thanksInstallment'])->name('thanks.Installment');
     Route::get('checkout_premium', [CartPageController::class, 'checkout_premium'])->name('checkout.premium');
     Route::get('thanks_premium', [CartPageController::class, 'thanks_premium'])->name('thanks.premium');
+    Route::get('course_id/{course_id}', [CartPageController::class, 'thanksInstallment'])->name('thanks.course_id');
 
 
 

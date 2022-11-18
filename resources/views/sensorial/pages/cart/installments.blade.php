@@ -21,7 +21,7 @@
                 <div class="col-lg-8 col-md-12">
                     <div class="" id="box">
                         <script src="https://eu-test.oppwa.com/v1/paymentWidgets.js?checkoutId={{ $checkoutId }}"></script>
-                        <form action="{{ route('thanks.Installment') }}" class="paymentWidgets"
+                        <form action="{{ route('thanks.Installment' ,$time_installment) }}" class="paymentWidgets"
                             data-brands="VISA MASTER AMEX"></form>
 
                     </div>
