@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Pages;
 
+use App\Events\sendmail;
+use App\Jobs\sendmailjop;
+use App\Listeners\check;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Course;
@@ -297,7 +300,7 @@ class CartPageController extends Controller
         if($responseData['result']['code'] == '000.100.110') {
             $order = Order::create(['total' => $amount, 'user_id' => Auth::id()]);
             Cart::where('user_id', Auth::id())->whereNull('order_id')->update(['order_id' => $order->id]);
-            Installment::create([
+         $data=Installment::create([
                 'Paid' => $amount,
                 'user_id' => Auth::id(),
                 'course_id' => $Installments->course_id,
@@ -310,6 +313,10 @@ class CartPageController extends Controller
                 'tranaction_id' => $responseData['id'],
                 'order_id' => $order->id
             ]);
+//event(new sendmail($data));
+$job=new sendmailjop($data);
+$job->delay(now()->addSecond(20));
+$this->dispatch($job);
             toastr()->success('نجحت عملية الشراء');
             return redirect()->route('homeShow');
         }else {

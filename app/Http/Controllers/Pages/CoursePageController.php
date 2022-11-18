@@ -17,11 +17,17 @@ class CoursePageController extends Controller
 
 
         $course = Course::find($id);
+
         $courses = Course::where('id', '<>', $id)->get()->take(4);
+
         if(auth()->user()){
-            $user = auth()->user()->id;
+            $user = Auth::id();
+
             $cart = Cart::where('user_id', '=', $user)->get();
+
             $count = Cart::where('user_id', $user)->count();
+
+
             return view('sensorial.pages.course.course', compact('course','courses','cart','count'));
         } else {
             return view('sensorial.pages.course.course', compact('course','courses'));

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    protected $table = 'course_user';
+    protected $table = 'course_users';
 
     public function comments()
     {
