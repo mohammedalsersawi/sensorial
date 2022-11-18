@@ -9,6 +9,8 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\CourseUser;
+use App\Models\Installment;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -52,7 +54,12 @@ class CartPageController extends Controller
             $user = auth()->user()->id;
             $cart = Cart::where('user_id', '=', $user)->whereNull('order_id')->get();
             $count = Cart::where('user_id', $user)->count();
-            return view('sensorial.pages.cart.cart', compact('cart','count'));
+            $amount = 0;
+            foreach ($cart as $car):
+                $amount +=  $car->price;
+            endforeach;
+            $totel = $amount;
+            return view('sensorial.pages.cart.cart', compact('cart','count','totel'));
         } else {
             return view('sensorial.pages.cart.cart');
         }
@@ -74,8 +81,10 @@ class CartPageController extends Controller
         // return $carts;
         $amount = 0;
         foreach ($carts as $cart):
-            $amount +=  $cart->price;
+            $amount +=  round($cart->price , 2);
         endforeach;
+        $totel = $amount;
+
         $url = "https://eu-test.oppwa.com/v1/checkouts";
         $data = "entityId=8a8294174b7ecb28014b9699220015ca" .
                     "&amount=$amount" .
@@ -96,11 +105,8 @@ class CartPageController extends Controller
         }
         curl_close($ch);
         $responseData = json_decode($responseData, true);
-            // return $responseData;
         $checkoutId = $responseData['id'];
-
-        // dd($responseData);
-        return view('sensorial.pages.cart.checkout', compact('checkoutId'));
+        return view('sensorial.pages.cart.checkout', compact('checkoutId' , 'totel'));
 
     }
 
@@ -110,10 +116,8 @@ class CartPageController extends Controller
         // return $carts;
         $amount = 0;
         foreach ($carts as $cart):
-            $amount +=  $cart->price;
+            $amount +=  round($cart->price,2);
         endforeach;
-
-        // dd(request()->all());
         $resourcePath = request()->resourcePath;
 
         $url = "https://eu-test.oppwa.com/$resourcePath";
@@ -136,21 +140,181 @@ class CartPageController extends Controller
 
         if($responseData['result']['code'] == '000.100.110') {
             $order = Order::create(['total' => $amount, 'user_id' => Auth::id()]);
-
-            // Payment::create([
-            //     'total' => 200,
-            //     'user_id' => Auth::id(),
-            //     'tranaction_id' => $responseData['id'],
-            //     'order_id' => $order->id
-            // ]);
-
             Cart::where('user_id', Auth::id())->whereNull('order_id')->update(['order_id' => $order->id]);
-
-
-
-            return "نجحت العملية";
+            Payment::create([
+                'total' => $amount,
+                'user_id' => Auth::id(),
+                'tranaction_id' => $responseData['id'],
+                'order_id' => $order->id
+            ]);
+            toastr()->success('نجحت عملية الشراء');
+            return redirect()->route('homeShow');
         }else {
-            return "فشلت العملية";
+            toastr()->error('فشلت عملية الشراء');
+            return redirect()->back();
+        }
+    }
+
+    public function checkout_installments(Request $request)
+    {
+            $time_installment = $request->installment;
+            $user = auth()->user()->id;
+            $cart = Cart::where('user_id', '=', $user)->whereNull('order_id')->first();
+            $amount = 0;
+            $totel = 0;
+            if($cart){
+            $count = Cart::where('user_id', $user)->count();
+            $totel =$cart->price;
+            $amount = round($totel / $time_installment , 2);
+            Installment::create([
+                'Paid' => $amount,
+                'user_id' => Auth::id(),
+                'course_id' => $cart->course_id,
+                'count_installment' => $time_installment,
+                'due_installments' => $time_installment - 1,
+            ]);
+        }
+            ////////////////////////////////////////////////
+        $url = "https://eu-test.oppwa.com/v1/checkouts";
+        $data = "entityId=8a8294174b7ecb28014b9699220015ca" .
+                    "&amount=$amount" .
+                    "&currency=USD" .
+                    "&paymentType=DB";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                        'Authorization:Bearer OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8c3k2S0pzVDg='));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// this should be set to true in production
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $responseData = curl_exec($ch);
+        if(curl_errno($ch)) {
+            return curl_error($ch);
+        }
+        curl_close($ch);
+        $responseData = json_decode($responseData, true);
+        $checkoutId = $responseData['id'];
+        return view('sensorial.pages.cart.installments' ,compact('checkoutId' ,'amount' ,'totel' ,'time_installment'));
+    }
+
+    public function thanksInstallment(Request $request)
+    {
+        $user = auth()->user()->id;
+        $data = Installment::where('user_id' , $user)->latest()->first();
+        $amount = round($data->Paid,2);
+        $resourcePath = request()->resourcePath;
+
+        $url = "https://eu-test.oppwa.com/$resourcePath";
+        $url .= "?entityId=8a8294174b7ecb28014b9699220015ca";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    'Authorization:Bearer OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8c3k2S0pzVDg='));
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// this should be set to true in production
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $responseData = curl_exec($ch);
+        if(curl_errno($ch)) {
+            return curl_error($ch);
+        }
+        curl_close($ch);
+        $responseData = json_decode($responseData, true);
+        if($responseData['result']['code'] == '000.100.110') {
+            $order = Order::create(['total' => $amount, 'user_id' => Auth::id()]);
+            Cart::where('user_id', Auth::id())->whereNull('order_id')->update(['order_id' => $order->id]);
+            CourseUser::create(['course_id' =>$data->course_id, 'user_id' => Auth::id() , 'status' => 1]);
+            Payment::create([
+                'total' => $amount,
+                'user_id' => Auth::id(),
+                'tranaction_id' => $responseData['id'],
+                'order_id' => $order->id
+            ]);
+            toastr()->success('نجحت عملية الشراء');
+            return redirect()->route('homeShow');
+        }else {
+
+            $data = Installment::where('user_id' , $user)->latest()->first();
+            $data->delete;
+            toastr()->error('فشلت عملية الشراء');
+            return redirect()->back();
+        }
+    }
+
+    public function checkout_premium()
+    {
+        $Installments = Installment::where('user_id', Auth::id())->latest()->first();
+        $amount = round($Installments->Paid ,2);
+        $totel = $amount * $Installments->due_installments;
+        $url = "https://eu-test.oppwa.com/v1/checkouts";
+        $data = "entityId=8a8294174b7ecb28014b9699220015ca" .
+                    "&amount=$amount" .
+                    "&currency=USD" .
+                    "&paymentType=DB";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                        'Authorization:Bearer OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8c3k2S0pzVDg='));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// this should be set to true in production
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $responseData = curl_exec($ch);
+        if(curl_errno($ch)) {
+            return curl_error($ch);
+        }
+        curl_close($ch);
+        $responseData = json_decode($responseData, true);
+        $checkoutId = $responseData['id'];
+        return view('sensorial.pages.cart.premium', compact('checkoutId' , 'Installments' ,'totel'));
+
+    }
+
+    public function thanks_premium()
+    {
+        $Installments = Installment::where('user_id', Auth::id())->latest()->first();
+        $amount =round( $Installments->Paid,2);
+        $resourcePath = request()->resourcePath;
+        $url = "https://eu-test.oppwa.com/$resourcePath";
+        $url .= "?entityId=8a8294174b7ecb28014b9699220015ca";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    'Authorization:Bearer OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8c3k2S0pzVDg='));
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);// this should be set to true in production
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $responseData = curl_exec($ch);
+        if(curl_errno($ch)) {
+            return curl_error($ch);
+        }
+        curl_close($ch);
+        $responseData = json_decode($responseData, true);
+        // dd($responseData['result']['code']);
+
+        if($responseData['result']['code'] == '000.100.110') {
+            $order = Order::create(['total' => $amount, 'user_id' => Auth::id()]);
+            Cart::where('user_id', Auth::id())->whereNull('order_id')->update(['order_id' => $order->id]);
+            Installment::create([
+                'Paid' => $amount,
+                'user_id' => Auth::id(),
+                'course_id' => $Installments->course_id,
+                'count_installment' => $Installments->count_installment,
+                'due_installments' => $Installments->due_installments - 1,
+            ]);
+            Payment::create([
+                'total' => $amount,
+                'user_id' => Auth::id(),
+                'tranaction_id' => $responseData['id'],
+                'order_id' => $order->id
+            ]);
+            toastr()->success('نجحت عملية الشراء');
+            return redirect()->route('homeShow');
+        }else {
+            toastr()->error('فشلت عملية الشراء');
+            return redirect()->back();
         }
     }
 

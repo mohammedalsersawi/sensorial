@@ -29,20 +29,17 @@
                 <div class="col-lg-4">
                     <div class="box-1">
                         <p class="total" lng-tag="Total">Total:</p>
-                        <span class="span-2">$39.98</span><br>
-                        <del>$169.98</del>
-                        <form action="">
-                            <input type="submit" name="" id="" value="Check out"
-                                class="form-control input-1">
-                        </form>
-                        <p class="Promotions" lng-tag="Promotions">Promotions</p>
+                        <span class="span-2">{{ $totel }}$</span><br>
+                        {{-- <del>${{ $totel }}</del> --}}
+
+                        {{-- <p class="Promotions" lng-tag="Promotions">Promotions</p>
 
                         <div class="input-group mb-3">
                             <input type="text" class="form-control input-2" placeholder="Enter Coupon"
                                 aria-label="Recipient's username" aria-describedby="button-addon2">
                             <button class="btn btn-outline-secondary apply" type="button" id="button-addon2"
                                 lng-tag="Apply">Apply</button>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

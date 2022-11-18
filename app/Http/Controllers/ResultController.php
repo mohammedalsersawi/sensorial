@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Result;
+use App\Models\biography;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ResultController extends Controller
 {
@@ -14,7 +16,8 @@ class ResultController extends Controller
      */
     public function index()
     {
-        //
+        $biographys = biography::all();
+        return view('sensorial.dashboard.PlatForm.index' , compact('biographys'));
     }
 
     /**
@@ -35,8 +38,34 @@ class ResultController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator($request->all(),[
+            'title' => 'required|string',
+            'dest' => 'required|string',
+            'image' => 'required',
+        ]);
+        if(!$validator->fails())
+        {
+            $course = new biography();
+            if ($request->hasFile('image')){
+                $image = time() .'.'.$request -> image->extension();
+                $request->image->move(public_path('requirement/uploads/course_photo/'),$image);
+                $course->image = $image;
+            }
+            $course->title = $request->title;
+            $course->dest = $request->dest;
+
+            $isSaved = $course->save();
+            return response()->json([
+                'message' => $isSaved ? "Created Successfully" : "Failed to Create"
+            ], $isSaved ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST);
+            } else {
+            //VALIDATION FAILED في حال فشل الفاليديشن
+            return response()->json([
+                'message' => $validator->getMessageBag()->first()
+            ], Response::HTTP_BAD_REQUEST);
+
     }
+}
 
     /**
      * Display the specified resource.

@@ -187,9 +187,9 @@ $messagesCount = Contact::all()->count();
             <div class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
-                        <li class="menu-title">
+                        {{-- <li class="menu-title">
                             <span>Main</span>
-                        </li>
+                        </li> --}}
                         <li class="submenu">
                             <a href="#"><i class="la la-dashboard"></i> <span> Dashboard</span> <span
                                     class="menu-arrow"></span></a>
@@ -303,6 +303,13 @@ $messagesCount = Contact::all()->count();
                                 <span class="menu-arrow"></span></a>
                             <ul style="display: none;">
                                 <li><a href="{{ route('comment.index') }}">Show Comments</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="#" class=""><i class="las la-envelope"></i> <span>PlatFormData</span>
+                                <span class="menu-arrow"></span></a>
+                            <ul style="display: none;">
+                                <li><a href="{{ route('platForm.index') }}">Show Data</a></li>
                             </ul>
                         </li>
 

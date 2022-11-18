@@ -7,22 +7,24 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LearnController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\OptionController;
+use App\Http\Controllers\ResultController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LectureController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\About_UsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InstructorController;
-use App\Http\Controllers\InstructorAuthController;
-use App\Http\Controllers\About_UsController;
 use App\Http\Controllers\My_ProfileController;
+use App\Http\Controllers\InstructorAuthController;
 use App\Http\Controllers\Pages\CartPageController;
 use App\Http\Controllers\Pages\CheckoutController;
 use App\Http\Controllers\pages\HomePageController;
@@ -34,7 +36,6 @@ use App\Http\Controllers\Pages\CheckoutPageController;
 use App\Http\Controllers\Pages\CustomerPageController;
 use App\Http\Controllers\Pages\WishlistPageController;
 use App\Http\Controllers\Pages\InstructorPageController;
-use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -152,7 +153,12 @@ Route::prefix('sensorial')->group(function () {
         Route::get('/{id}', [CartPageController::class, 'removeCartItem'])->name('removeItem');
     });
     Route::get('checkout', [CartPageController::class, 'checkout'])->name('checkout');
-    Route::get('thanks', [MainController::class, 'thanks'])->name('site.thanks');
+    Route::get('thanks', [CartPageController::class, 'thanks'])->name('site.thanks');
+    Route::post('installments', [CartPageController::class, 'checkout_installments'])->name('installments');
+    Route::get('thanksInstallment', [CartPageController::class, 'thanksInstallment'])->name('thanks.Installment');
+    Route::get('checkout_premium', [CartPageController::class, 'checkout_premium'])->name('checkout.premium');
+    Route::get('thanks_premium', [CartPageController::class, 'thanks_premium'])->name('thanks.premium');
+
 
 
     // View Course
@@ -219,6 +225,8 @@ Route::prefix('sensorial')->group(function () {
             //////////////////////////////////////////////////////////
 
             Route::resource('section', SectionController::class);
+            Route::resource('platForm', ResultController::class);
+
 
             Route::resource('quiz', QuizController::class);
 
@@ -227,6 +235,8 @@ Route::prefix('sensorial')->group(function () {
             Route::resource('option', OptionController::class);
 
             Route::resource('lecture', LectureController::class);
+            Route::get('classes/{id}', [LectureController::class , 'getclasses'])->name('getclasses');
+
 
             Route::resource('learn', LearnController::class);
 
