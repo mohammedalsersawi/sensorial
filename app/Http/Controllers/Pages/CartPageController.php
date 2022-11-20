@@ -251,6 +251,7 @@ class CartPageController extends Controller
                 'count_installment' => $count,
                 'due_installments' => $count - 1,
             ]);
+
             toastr()->success('نجحت عملية الشراء');
             return redirect()->route('homeShow');
         } else {
