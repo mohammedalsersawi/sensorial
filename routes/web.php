@@ -143,7 +143,7 @@ Route::prefix('sensorial')->group(function () {
     Route::prefix('course')->group(function () {
         Route::get('/', [CoursePageController::class, 'all'])->name('coursesShow');
         Route::get('{id}', [CoursePageController::class, 'show'])->name('courseShow');
-
+        Route::post('rating/{course_id}',[CoursePageController::class, 'rateing'])->name('rateing');
     });
     Route::get('like/courses', [CoursePageController::class, 'showlike'])->name('likecourseShow');
     Route::post('like/courses', [CoursePageController::class, 'postlike'])->name('courseLike');
