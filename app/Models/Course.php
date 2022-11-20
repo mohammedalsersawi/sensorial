@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Course extends Model
 {
 
-
+protected $guarded=[];
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -67,6 +67,14 @@ class Course extends Model
     public function quizzes()
     {
         return $this->hasMany(Quiz::class);
+    }
+    public function ratee(){
+        return $this->hasOne(rateing::class,'course_id');
+
+    }
+    public function rateall(){
+        return $this->hasMany(rateing::class,'course_id');
+
     }
 
 

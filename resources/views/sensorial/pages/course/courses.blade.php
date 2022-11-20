@@ -35,60 +35,87 @@
                 <div class="col-md-3">
 
                     <div class="accordion">
-                        <div class="accordion-item">
-                            <div class="accordion-item-header">
-                                <div class="content-acc">
-                                    <p class="p-101 fw-bold" lng-tag="Topic">Topic</p>
-                                </div>
-                            </div>
-                            <div class="accordion-item-body">
-                                <div class="accordion-item-body-content">
-                                    <div class="body-content">
-                                        <input type="checkbox" name="" id="">
-                                        <p class="mb-0 ms-1" lng-tag="Baby">Baby </p>
-                                    </div>
-                                    <div class="body-content">
-                                        <input type="checkbox" name="" id="">
-                                        <p class="mb-0 ms-1" lng-tag="Baby">Baby </p>
-                                    </div>
-                                    <div class="body-content">
-                                        <input type="checkbox" name="" id="">
-                                        <p class="mb-0 ms-1" lng-tag="Baby">Baby </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                       <form>
+                           <div class="accordion-item">
+                               <div class="accordion-item-header">
+                                   <div class="content-acc">
+                                       <p class="p-101 fw-bold" lng-tag="Topic">Topic</p>
+                                   </div>
+                               </div>
+                               <div class="accordion-item-body">
+                                   <div class="accordion-item-body-content">
+                                      @foreach($courses as $course)
 
-                        <div class="accordion-item">
-                            <div class="accordion-item-header">
-                                <div class="content-acc">
-                                    <p class="p-101 fw-bold" lng-tag="Rating">Rating </p>
-                                </div>
-                            </div>
-                            <div class="accordion-item-body">
-                                <div class="accordion-item-body-content">
-                                    <div class="content-c">
-                                        <input type="checkbox" name="" id="" class="me-1">
-                                        <p class="m-0"><i class="fa-solid fa-star sta"></i><i
-                                                class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i><i
-                                                class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i>
-                                            <span lng-tag="4.5 and up">4.5 and up</span>
-                                        </p>
-                                    </div>
-                                    <div class="content-c">
-                                        <input type="checkbox" name="" id="" class="me-1">
-                                        <p class="m-0"><i class="fa-solid fa-star sta"></i><i
-                                                class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i><i
-                                                class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i>
-                                            <span lng-tag="4.5 and up">4.5 and up</span>
-                                        </p>
-                                    </div>
+                                           <div class="body-content">
+                                               <input type="checkbox" name="" id="">
+                                               <p class="mb-0 ms-1" lng-tag="Baby">Baby </p>
+                                           </div>
+                                       @endforeach
+
+                                       <button type="submit" class="btn-outline-primary">Filter</button>
+                                   </div>
+                               </div>
+                           </div>
+                       </form>
+
+                       <form action="{{route('coursesShow')}}" method="get" >
+                           <div class="accordion-item">
+                               <div class="accordion-item-header">
+                                   <div class="content-acc">
+                                       <p class="p-101 fw-bold" lng-tag="Rating">Rating </p>
+                                   </div>
+                               </div>
+                               <div class="accordion-item-body">
+                                   <div class="accordion-item-body-content">
+                                       <div class="content-c">
+                                           <input type="checkbox"  name="sarech[]"  value="5" id="" class="me-1">
+                                           <p class="m-0"><i class="fa-solid fa-star sta"></i><i
+                                                   class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i><i
+                                                   class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i>
+                                               <span lng-tag="4.5 and up">5 and up</span>
+                                           </p>
+                                       </div>
+                                       <div class="content-c">
+                                           <input type="checkbox" name="sarech[]"  value="4" id="" class="me-1">
+                                           <p class="m-0"><i class="fa-solid fa-star sta"></i><i
+                                                   class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i><i
+                                                   class="fa-solid fa-star sta"></i><i class="fa-solid fa-star 1"></i>
+                                               <span lng-tag="4.5 and up">4 and up</span>
+                                           </p>
+                                       </div>
+                                       <div class="content-c">
+                                           <input type="checkbox" name="sarech[]"  value="3" id="" class="me-1">
+                                           <p class="m-0"><i class="fa-solid fa-star sta"></i><i
+                                                   class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i><i
+                                                   class="fa-solid fa-star "></i><i class="fa-solid fa-star "></i>
+                                               <span lng-tag="4.5 and up">3 and up</span>
+                                           </p>
+                                       </div>
+                                       <div class="content-c">
+                                           <input type="checkbox" name="sarech[]"  value="2" id="" class="me-1">
+                                           <p class="m-0"><i class="fa-solid fa-star sta"></i><i
+                                                   class="fa-solid fa-star sta"></i><i class="fa-solid fa-star "></i><i
+                                                   class="fa-solid fa-star "></i><i class="fa-solid fa-star "></i>
+                                               <span lng-tag="4.5 and up">2 and up</span>
+                                           </p>
+                                       </div>
+                                       <div class="content-c">
+                                           <input type="checkbox" name="sarech[]"  value="1" id="" class="me-1">
+                                           <p class="m-0"><i class="fa-solid fa-star sta"></i><i
+                                                   class="fa-solid fa-star "></i><i class="fa-solid fa-star "></i><i
+                                                   class="fa-solid fa-star "></i><i class="fa-solid fa-star "></i>
+                                               <span lng-tag="4.5 and up">1 and up</span>
+                                           </p>
+                                       </div>
+                                       <button type="submit" class="btn-outline-primary">Filter</button>
 
 
-                                </div>
 
-                            </div>
-                        </div>
+                                   </div>
+
+                               </div>
+                           </div>
+                       </form>
                     </div>
 
                 </div>
@@ -120,31 +147,42 @@
                                         $starcount =floor($rating);
                                         $fraction = $rating - $starcount;
                                     @endphp
+                                @if($rating== 0)
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                @else
                                     @foreach (range(1,$starcount) as $i)
                                         <i class="fa-solid fa-star star"></i>
                                     @endforeach
 
-                                    @if ($fraction == 0)
-                                        <i class="fa-solid fa-star"></i>
-                                    @elseif ($fraction > 0.5)
-                                        <i class="fa-solid fa-star star"></i>
-                                    @else
-                                        <i class="fa-solid fa-star"></i>
-                                    @endif
-                                @if($starcount != 4)
+                                    @if($rating!=5)
+                                            @if ($fraction == 0 )
+                                                <i class="fa-solid fa-star"></i>
+                                            @elseif ($fraction > 0.5 )
+                                                <i class="fa-solid fa-star star"></i>
+                                            @else
+                                                <i class="fa-solid fa-star"></i>
+                                            @endif
+                                        @endif
+
+                                @if($starcount != 4 && $rating!=5)
 
                                     @foreach (range(1, 4 - $starcount) as $i)
                                         <i class="fa-solid fa-star "></i>
                                     @endforeach
-                                @elseif($starcount != 4 && $starcount<0.5)
+                                @elseif($starcount != 4 && $starcount<0.5 && $rating!=5)
                                     <i class="fa-solid fa-star "></i>
 
+                                @endif
                                 @endif
 
 
 
 
-                                <span class="num"><span class="number"></span>(+100k)</span>
+                                <span class="num"><span class="number"></span>({{$course->rateall->count()}})</span>
                                 <ul>
                                     @if ($course->lectures)
                                         @if (count($course->lectures) === 1)

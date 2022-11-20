@@ -32,10 +32,50 @@
                             </p>
                             <p lng-tag="Dorothy Parks" style="text-transform: capitalize">by
                                 <u>{{ $course->instructor->name }}</u>
-                                <span class="span-1">4.5</span> <i class="fa-solid fa-star star"></i><i
-                                    class="fa-solid fa-star star"></i><i class="fa-solid fa-star star"></i><i
-                                    class="fa-solid fa-star star"></i><i class="fa-solid fa-star star"></i><span
-                                    class="span-2">(+100k)</span>
+                                <span class="number">({{ $course->rate }})</span>
+
+
+                                @php
+                                    $rating = $course->rate;
+                                    $starcount =floor($rating);
+                                    $fraction = $rating - $starcount;
+                                @endphp
+                                @if($rating== 0)
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                @else
+                                    @foreach (range(1,$starcount) as $i)
+                                        <i class="fa-solid fa-star star"></i>
+                                    @endforeach
+
+                                    @if($rating!=5)
+                                        @if ($fraction == 0 )
+                                            <i class="fa-solid fa-star"></i>
+                                        @elseif ($fraction > 0.5 )
+                                            <i class="fa-solid fa-star star"></i>
+                                        @else
+                                            <i class="fa-solid fa-star"></i>
+                                        @endif
+                                    @endif
+
+                                    @if($starcount != 4 && $rating!=5)
+
+                                        @foreach (range(1, 4 - $starcount) as $i)
+                                            <i class="fa-solid fa-star "></i>
+                                        @endforeach
+                                    @elseif($starcount != 4 && $starcount<0.5 && $rating!=5)
+                                        <i class="fa-solid fa-star "></i>
+
+                                    @endif
+                                @endif
+
+
+
+
+                                <span class="num"><span class="number"></span>({{$course->rateall->count()}})</span>
                             </p>
                             <ul class="justify-content-center justify-content-sm-start">
                                 <span lng-tag="13 total hours">13 total hours</span>
@@ -286,10 +326,10 @@
                                             </g>
                                         </svg></span>
                                     <div class="progress" style="height: 13px;">
-                                        <div class="progress-bar" role="progressbar" style="width: 80%;"
+                                        <div class="progress-bar" role="progressbar" style="width: {{$course->rateall->where('ratein',5)->count()/((!$course->rateall->count()==0)?$course->rateall->count():1)*100}}%;"
                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                    <span>106</span>
+                                    <span>{{$course->rateall->where('ratein',5)->count()}}</span>
                                 </div>
                                 <div class="progres">
                                     <span class="fw-bold">4<svg class="Star_5" xmlns="http://www.w3.org/2000/svg"
@@ -304,10 +344,9 @@
                                             </g>
                                         </svg></span>
                                     <div class="progress" style="height: 13px;">
-                                        <div class="progress-bar" role="progressbar" style="width: 30%;"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar" role="progressbar" style="width: {{$course->rateall->where('ratein',4)->count()/((!$course->rateall->count()==0)?$course->rateall->count():1)*100}}%;"                                           aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                    <span>32</span>
+                                    <span>{{$course->rateall->where('ratein',4)->count()}}</span>
                                 </div>
                                 <div class="progres">
                                     <span class="fw-bold">3<svg class="Star_5" xmlns="http://www.w3.org/2000/svg"
@@ -322,10 +361,10 @@
                                             </g>
                                         </svg></span>
                                     <div class="progress" style="height: 13px;">
-                                        <div class="progress-bar" role="progressbar" style="width: 0%;"
+                                        <div class="progress-bar" role="progressbar" style="width: {{$course->rateall->where('ratein',3)->count()/((!$course->rateall->count()==0)?$course->rateall->count():1)*100}}%;"
                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                    <span>0</span>
+                                    <span>{{$course->rateall->where('ratein',3)->count()}}</span>
                                 </div>
                                 <div class="progres">
                                     <span class="fw-bold">2<svg class="Star_5" xmlns="http://www.w3.org/2000/svg"
@@ -340,10 +379,9 @@
                                             </g>
                                         </svg></span>
                                     <div class="progress" style="height: 13px;">
-                                        <div class="progress-bar" role="progressbar" style="width: 0%;"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar" role="progressbar" style="width: {{$course->rateall->where('ratein',2)->count()/((!$course->rateall->count()==0)?$course->rateall->count():1)*100}}%;"                                          aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
-                                    <span>0</span>
+                                    <span>{{$course->rateall->where('ratein',2)->count()}}</span>
                                 </div>
                                 <div class="progres">
                                     <span class="fw-bold">1<svg class="Star_5" xmlns="http://www.w3.org/2000/svg"
@@ -358,13 +396,42 @@
                                             </g>
                                         </svg></span>
                                     <div class="progress" style="height: 13px;">
-                                        <div class="progress-bar" role="progressbar" style="width: 0%;"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress-bar" role="progressbar" style="width: {{$course->rateall->where('ratein',1)->count()/((!$course->rateall->count()==0)?$course->rateall->count():1)*100}}%;"
+                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
                                     </div>
-                                    <span>0</span>
+                                    <span>{{$course->rateall->where('ratein',1)->count()}}</span>
                                 </div>
                             </div>
+
                         </div>
+@if($show)
+                        @if(!$rate)
+                        <form action="{{route('rateing',$course->id)}}" method="post">
+                            @csrf
+                            <span  onmouseover="starmark(this)" onclick="starmark(this)" id="1one" style="font-size:40px;cursor:pointer;"  class="fa fa-star checked"></span>
+                            <span onmouseover="starmark(this)" onclick="starmark(this)" id="2one"  style="font-size:40px;cursor:pointer;" class="fa fa-star "></span>
+                            <span onmouseover="starmark(this)" onclick="starmark(this)" id="3one"  style="font-size:40px;cursor:pointer;" class="fa fa-star "></span>
+                            <span onmouseover="starmark(this)" onclick="starmark(this)" id="4one"  style="font-size:40px;cursor:pointer;" class="fa fa-star"></span>
+                            <span onmouseover="starmark(this)" onclick="starmark(this)" id="5one"  style="font-size:40px;cursor:pointer;" class="fa fa-star"></span>
+                            <br/>
+                            <hr>
+                            <input  name="rating" id="r"  type="hidden">
+                            <button  onclick="result()" type="submit" style="margin-top:10px;margin-left:5px;" class="btn btn-lg btn-success">Submit</button>
+                            <br>
+                            <br>
+                            <br>
+
+
+
+                        </form>
+                        @else
+
+                        <h1>It was rated {{$course->ratee->ratein}} stars </h1>
+
+
+                        @endif
+                        @endif
                     </div>
                 </div>
 
@@ -661,5 +728,38 @@
         document.querySelector(".heart-11").onclick = function() {
             document.querySelector(".heart-22").classList.toggle("add-fill")
         }
+    </script>
+
+    <script>
+        var count;
+
+        function starmark(item)
+        {
+            count=item.id[0];
+            sessionStorage.starRating = count;
+            var subid= item.id.substring(1);
+            for(var i=0;i<5;i++)
+            {
+                if(i<count)
+                {
+                    document.getElementById((i+1)+subid).style.color="orange";
+                }
+                else
+                {
+                    document.getElementById((i+1)+subid).style.color="black";
+                }
+
+
+            }
+
+        }
+
+        function result()
+        {
+//Rating : Count
+//Review : Comment(id)
+            return  document.getElementById("r").value=count;
+        }
+
     </script>
 @endsection
