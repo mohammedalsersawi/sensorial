@@ -2179,16 +2179,16 @@
         },
         {
             "name": "php-flasher/flasher",
-            "version": "v1.7.0",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-flasher/flasher.git",
-                "reference": "10071abc73d0311a99e1860e88d5895ac4d7535c"
+                "reference": "e9d692bbedc29eca11590383092f9dd0dd76beeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-flasher/flasher/zipball/10071abc73d0311a99e1860e88d5895ac4d7535c",
-                "reference": "10071abc73d0311a99e1860e88d5895ac4d7535c",
+                "url": "https://api.github.com/repos/php-flasher/flasher/zipball/e9d692bbedc29eca11590383092f9dd0dd76beeb",
+                "reference": "e9d692bbedc29eca11590383092f9dd0dd76beeb",
                 "shasum": ""
             },
             "require": {
@@ -2232,40 +2232,28 @@
                 "toastr"
             ],
             "support": {
-                "source": "https://github.com/php-flasher/flasher/tree/v1.7.0"
+                "source": "https://github.com/php-flasher/flasher/tree/v1.8.0"
             },
             "funding": [
                 {
-                    "url": "https://www.paypal.com/paypalme/yoeunes",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://ko-fi.com/yoeunes",
-                    "type": "ko_fi"
-                },
-                {
-                    "url": "https://opencollective.com/php-flasher",
-                    "type": "open_collective"
-                },
-                {
-                    "url": "https://www.patreon.com/yoeunes",
-                    "type": "patreon"
+                    "url": "https://github.com/yoeunes",
+                    "type": "github"
                 }
             ],
-            "time": "2022-07-05T19:33:26+00:00"
+            "time": "2022-11-20T18:31:59+00:00"
         },
         {
             "name": "php-flasher/flasher-laravel",
-            "version": "v1.7.0",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-flasher/flasher-laravel.git",
-                "reference": "ad58b981d4fb518d69ef98b5acb6840a6d73d431"
+                "reference": "fbb2cb6edff4ab9d69a80780bfdb7f510171e04f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-flasher/flasher-laravel/zipball/ad58b981d4fb518d69ef98b5acb6840a6d73d431",
-                "reference": "ad58b981d4fb518d69ef98b5acb6840a6d73d431",
+                "url": "https://api.github.com/repos/php-flasher/flasher-laravel/zipball/fbb2cb6edff4ab9d69a80780bfdb7f510171e04f",
+                "reference": "fbb2cb6edff4ab9d69a80780bfdb7f510171e04f",
                 "shasum": ""
             },
             "require": {
@@ -2304,7 +2292,7 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Laravel package integrating PHP Flasher into Laravel applications",
+            "description": "Laravel package integrating PHPFlasher into Laravel applications",
             "homepage": "https://php-flasher.io",
             "keywords": [
                 "Flasher",
@@ -2323,40 +2311,28 @@
                 "yoeunes"
             ],
             "support": {
-                "source": "https://github.com/php-flasher/flasher-laravel/tree/v1.7.0"
+                "source": "https://github.com/php-flasher/flasher-laravel/tree/v1.8.0"
             },
             "funding": [
                 {
-                    "url": "https://www.paypal.com/paypalme/yoeunes",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://ko-fi.com/yoeunes",
-                    "type": "ko_fi"
-                },
-                {
-                    "url": "https://opencollective.com/php-flasher",
-                    "type": "open_collective"
-                },
-                {
-                    "url": "https://www.patreon.com/yoeunes",
-                    "type": "patreon"
+                    "url": "https://github.com/yoeunes",
+                    "type": "github"
                 }
             ],
-            "time": "2022-07-05T19:36:36+00:00"
+            "time": "2022-10-30T16:53:01+00:00"
         },
         {
             "name": "php-flasher/flasher-toastr",
-            "version": "v1.7.0",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-flasher/flasher-toastr.git",
-                "reference": "1cf22ace7e3074d876a8d928ad90ee41a4404822"
+                "reference": "b6c4e3d030e40fa15f7c91ab8c5cbae183152136"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-flasher/flasher-toastr/zipball/1cf22ace7e3074d876a8d928ad90ee41a4404822",
-                "reference": "1cf22ace7e3074d876a8d928ad90ee41a4404822",
+                "url": "https://api.github.com/repos/php-flasher/flasher-toastr/zipball/b6c4e3d030e40fa15f7c91ab8c5cbae183152136",
+                "reference": "b6c4e3d030e40fa15f7c91ab8c5cbae183152136",
                 "shasum": ""
             },
             "require": {
@@ -2381,7 +2357,7 @@
                     "role": "Developer"
                 }
             ],
-            "description": "PHP Flasher adapter for Toastr",
+            "description": "PHPFlasher adapter for Toastr",
             "homepage": "https://php-flasher.io",
             "keywords": [
                 "alerts",
@@ -2396,27 +2372,15 @@
                 "toastr"
             ],
             "support": {
-                "source": "https://github.com/php-flasher/flasher-toastr/tree/v1.7.0"
+                "source": "https://github.com/php-flasher/flasher-toastr/tree/v1.8.0"
             },
             "funding": [
                 {
-                    "url": "https://www.paypal.com/paypalme/yoeunes",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://ko-fi.com/yoeunes",
-                    "type": "ko_fi"
-                },
-                {
-                    "url": "https://opencollective.com/php-flasher",
-                    "type": "open_collective"
-                },
-                {
-                    "url": "https://www.patreon.com/yoeunes",
-                    "type": "patreon"
+                    "url": "https://github.com/yoeunes",
+                    "type": "github"
                 }
             ],
-            "time": "2022-07-05T19:36:36+00:00"
+            "time": "2022-11-20T18:31:59+00:00"
         },
         {
             "name": "phpoption/phpoption",

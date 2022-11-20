@@ -150,7 +150,7 @@ class CartPageController extends Controller
         if ($responseData['result']['code'] == '000.100.110') {
             $order = Order::create(['total' => $amount, 'user_id' => Auth::id()]);
             foreach ($carts as $cart) {
-                CourseUser::create(['course_id' => $cart->course_id, 'user_id' => Auth::id(), 'status' => 1]);
+            CourseUser::create(['course_id' => $cart->course_id, 'user_id' => Auth::id(), 'status' => 1]);
             };
             Cart::where('user_id', Auth::id())->whereNull('order_id')->update(['order_id' => $order->id]);
             Payment::create([

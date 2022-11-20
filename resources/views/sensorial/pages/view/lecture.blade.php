@@ -80,18 +80,9 @@
 
                         <div class="href mt-4">
                             <a href="" lng-tag="Description">Description</a>
-                            <a href="{{ route('viewAnnouncement', $lecture->id) }}" lng-tag="Announcement">Announcement </a>
-                            <a href="" lng-tag="Reviews">Reviews </a>
+                            <a href="{{ route('reviews') }}" lng-tag="Reviews">Reviews </a>
                         </div>
-                        <p class="p-11 mt-4" lng-tag="Intellectual">Intellectual Property in Augmented Reality
-                            Applications
-                            In much the same way that virtual content has questions surrounding it in all media,
-                            augmented reality shares those same dilemmas and problems. If you purchase a book and have
-                            it on your bookshelf at home, you would be quite upset if the publisher came and removed
-                            that book from your bookshelf. However, if that content was available on a website and the
-                            publisher removed or altered the information, it feels much less invasive. Likewise, if one
-                            procures an augmented reality application, does the model for the content follow the model
-                            of a physical book or is it more like material available on a website?</p>
+                        <p class="p-11 mt-4" lng-tag="Intellectual">{{ $lecture->description }}?</p>
                     </div>
 
                 </div>

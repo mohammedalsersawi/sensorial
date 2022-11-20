@@ -24,8 +24,9 @@ class ViewCourseController extends Controller
         return view('sensorial.pages.view.lecture', compact('course', 'lecture'));
     }
 
-    public function showAnnouncement($id)
+    public function reviews($id)
     {
+        return "lll";
         $course = Course::find($id);
         $announcement = Announcement::find($id);
         return view('sensorial.pages.view.announcement', compact('course', 'announcement'));

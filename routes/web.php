@@ -167,7 +167,7 @@ Route::prefix('sensorial')->group(function () {
     Route::prefix('view-course')->group(function () {
         Route::get('{id}', [ViewCourseController::class, 'show'])->name('viewCourse');
         Route::get('lecture/{id}', [ViewCourseController::class, 'showLecture'])->name('viewLecture');
-        Route::get('lecture/announcement/{id}', [ViewCourseController::class, 'showAnnouncement'])->name('viewAnnouncement');
+        Route::get('lecture/reviews/{id}', [ViewCourseController::class, 'reviews'])->name('reviews');
     });
 
     // Checkout
