@@ -243,6 +243,7 @@ class CartPageController extends Controller
                 'tranaction_id' => $responseData['id'],
                 'order_id' => $order->id
             ]);
+
             Installment::create([
                 'Paid' => $amount,
                 'user_id' => Auth::id(),
