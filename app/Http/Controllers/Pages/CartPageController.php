@@ -170,6 +170,8 @@ class CartPageController extends Controller
     public function checkout_installments(Request $request)
     {
         $cart = Cart::where('user_id', '=', Auth::id())->whereNull('order_id')->first();
+        $count = Cart::where('user_id', '=', Auth::id())->whereNull('order_id')->count();
+        if($count > 0){
         $user = auth()->user()->id;
         $time_installment = $request->installment;
         $amount = 0;
@@ -202,9 +204,13 @@ class CartPageController extends Controller
         $responseData = json_decode($responseData, true);
         $checkoutId = $responseData['id'];
         return view('sensorial.pages.cart.installments', compact('checkoutId', 'amount', 'totel', 'time_installment'));
+    } else {
+        toastr()->warning('السلة فارغة ');
+        return redirect()->back();
+    }
     }
 
-    public function thanksInstallment(Request $request, $count , $course_id)
+    public function thanksInstallment(Request $request, $count)
     {
         $user = auth()->user()->id;
         $data = Cart::where('user_id', '=', $user)->whereNull('order_id')->latest()->first();

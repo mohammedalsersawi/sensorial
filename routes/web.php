@@ -109,7 +109,7 @@ Route::prefix('sensorial')->group(function () {
         Route::get('/about_course', [My_ProfileController::class, 'about_course'])->name('about_course');
         Route::get('/grade', [My_ProfileController::class, 'grade'])->name('grade');
     });
-    
+
 
     Route::resource('payment', PaymentController::class);
 
