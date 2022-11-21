@@ -6,6 +6,7 @@ use App\Events\sendmail;
 use App\Jobs\sendmailjop;
 use App\Listeners\check;
 use App\Models\Cart;
+use App\Models\Category;
 use App\Models\Order;
 use App\Models\Course;
 use App\Models\Payment;
@@ -16,6 +17,7 @@ use App\Models\CourseUser;
 use App\Models\Installment;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class CartPageController extends Controller
 {
@@ -148,9 +150,16 @@ class CartPageController extends Controller
         // dd($responseData['result']['code']);
 
         if ($responseData['result']['code'] == '000.100.110') {
+            DB::beginTransaction();
+            try {
             $order = Order::create(['total' => $amount, 'user_id' => Auth::id()]);
             foreach ($carts as $cart) {
-            CourseUser::create(['course_id' => $cart->course_id, 'user_id' => Auth::id(), 'status' => 1]);
+           $coure= CourseUser::create(['course_id' => $cart->course_id, 'user_id' => Auth::id(), 'status' => 1]);
+          $po= $coure->course->category->power;
+          $ca=$coure->course->category_id;
+          Category::where('id',$ca)->update([
+              'power'=>$po+1
+          ]);
             };
             Cart::where('user_id', Auth::id())->whereNull('order_id')->update(['order_id' => $order->id]);
             Payment::create([
@@ -159,8 +168,13 @@ class CartPageController extends Controller
                 'tranaction_id' => $responseData['id'],
                 'order_id' => $order->id
             ]);
+            DB::commit();
             toastr()->success('نجحت عملية الشراء');
             return redirect()->route('homeShow');
+            }catch (Throwable $e){
+                DB::rollBack();}
+            toastr()->error('فشلت عملية الشراء');
+            return redirect()->back();
         } else {
             toastr()->error('فشلت عملية الشراء');
             return redirect()->back();
