@@ -5,6 +5,17 @@
 @section('styles')
 
     <link rel="stylesheet" href="{{ asset('requirement/pages/css/result-baby.css') }}">
+    <style>
+        .button {
+            background-color: Transparent;
+            background-repeat: no-repeat;
+            border: none;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+
+    </style>
 
 @endsection
 
@@ -35,87 +46,91 @@
                 <div class="col-md-3">
 
                     <div class="accordion">
-                       <form>
-                           <div class="accordion-item">
-                               <div class="accordion-item-header">
-                                   <div class="content-acc">
-                                       <p class="p-101 fw-bold" lng-tag="Topic">Topic</p>
-                                   </div>
-                               </div>
-                               <div class="accordion-item-body">
-                                   <div class="accordion-item-body-content">
-                                      @foreach($courses as $course)
+                        <form action="{{ route('coursesShow') }}" method="get">
+                            <div class="accordion-item">
+                                <div class="accordion-item-header">
+                                    <div class="content-acc">
+                                        <p class="p-101 fw-bold" lng-tag="Topic">Topic</p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item-body">
+                                    <div class="accordion-item-body-content">
+                                        @foreach ($category as $course)
+                                            <div class="body-content">
+                                                <input type="checkbox" value="{{$course->id}}" name="filter[]" i>
+                                                <p class="mb-0 ms-1" >{{$course->category_name}} </p>
+                                            </div>
+                                        @endforeach
 
-                                           <div class="body-content">
-                                               <input type="checkbox" name="" id="">
-                                               <p class="mb-0 ms-1" lng-tag="Baby">Baby </p>
-                                           </div>
-                                       @endforeach
+                                        <button type="submit" class="btn-outline-primary">Filter</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
 
-                                       <button type="submit" class="btn-outline-primary">Filter</button>
-                                   </div>
-                               </div>
-                           </div>
-                       </form>
-
-                       <form action="{{route('coursesShow')}}" method="get" >
-                           <div class="accordion-item">
-                               <div class="accordion-item-header">
-                                   <div class="content-acc">
-                                       <p class="p-101 fw-bold" lng-tag="Rating">Rating </p>
-                                   </div>
-                               </div>
-                               <div class="accordion-item-body">
-                                   <div class="accordion-item-body-content">
-                                       <div class="content-c">
-                                           <input type="checkbox"  name="sarech[]"  value="5" id="" class="me-1">
-                                           <p class="m-0"><i class="fa-solid fa-star sta"></i><i
-                                                   class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i><i
-                                                   class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i>
-                                               <span lng-tag="4.5 and up">5 and up</span>
-                                           </p>
-                                       </div>
-                                       <div class="content-c">
-                                           <input type="checkbox" name="sarech[]"  value="4" id="" class="me-1">
-                                           <p class="m-0"><i class="fa-solid fa-star sta"></i><i
-                                                   class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i><i
-                                                   class="fa-solid fa-star sta"></i><i class="fa-solid fa-star 1"></i>
-                                               <span lng-tag="4.5 and up">4 and up</span>
-                                           </p>
-                                       </div>
-                                       <div class="content-c">
-                                           <input type="checkbox" name="sarech[]"  value="3" id="" class="me-1">
-                                           <p class="m-0"><i class="fa-solid fa-star sta"></i><i
-                                                   class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i><i
-                                                   class="fa-solid fa-star "></i><i class="fa-solid fa-star "></i>
-                                               <span lng-tag="4.5 and up">3 and up</span>
-                                           </p>
-                                       </div>
-                                       <div class="content-c">
-                                           <input type="checkbox" name="sarech[]"  value="2" id="" class="me-1">
-                                           <p class="m-0"><i class="fa-solid fa-star sta"></i><i
-                                                   class="fa-solid fa-star sta"></i><i class="fa-solid fa-star "></i><i
-                                                   class="fa-solid fa-star "></i><i class="fa-solid fa-star "></i>
-                                               <span lng-tag="4.5 and up">2 and up</span>
-                                           </p>
-                                       </div>
-                                       <div class="content-c">
-                                           <input type="checkbox" name="sarech[]"  value="1" id="" class="me-1">
-                                           <p class="m-0"><i class="fa-solid fa-star sta"></i><i
-                                                   class="fa-solid fa-star "></i><i class="fa-solid fa-star "></i><i
-                                                   class="fa-solid fa-star "></i><i class="fa-solid fa-star "></i>
-                                               <span lng-tag="4.5 and up">1 and up</span>
-                                           </p>
-                                       </div>
-                                       <button type="submit" class="btn-outline-primary">Filter</button>
-
+                        <form action="{{ route('coursesShow') }}" method="get">
+                            <div class="accordion-item">
+                                <div class="accordion-item-header">
+                                    <div class="content-acc">
+                                        <p class="p-101 fw-bold" lng-tag="Rating">Rating </p>
+                                    </div>
+                                </div>
+                                <div class="accordion-item-body">
+                                    <div class="accordion-item-body-content">
+                                        <div class="content-c">
+                                            <input type="checkbox" name="sarech[]" value="5" id=""
+                                                class="me-1">
+                                            <p class="m-0"><i class="fa-solid fa-star sta"></i><i
+                                                    class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i><i
+                                                    class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i>
+                                                <span lng-tag="4.5 and up">5 and up</span>
+                                            </p>
+                                        </div>
+                                        <div class="content-c">
+                                            <input type="checkbox" name="sarech[]" value="4" id=""
+                                                class="me-1">
+                                            <p class="m-0"><i class="fa-solid fa-star sta"></i><i
+                                                    class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i><i
+                                                    class="fa-solid fa-star sta"></i><i class="fa-solid fa-star 1"></i>
+                                                <span lng-tag="4.5 and up">4 and up</span>
+                                            </p>
+                                        </div>
+                                        <div class="content-c">
+                                            <input type="checkbox" name="sarech[]" value="3" id=""
+                                                class="me-1">
+                                            <p class="m-0"><i class="fa-solid fa-star sta"></i><i
+                                                    class="fa-solid fa-star sta"></i><i class="fa-solid fa-star sta"></i><i
+                                                    class="fa-solid fa-star "></i><i class="fa-solid fa-star "></i>
+                                                <span lng-tag="4.5 and up">3 and up</span>
+                                            </p>
+                                        </div>
+                                        <div class="content-c">
+                                            <input type="checkbox" name="sarech[]" value="2" id=""
+                                                class="me-1">
+                                            <p class="m-0"><i class="fa-solid fa-star sta"></i><i
+                                                    class="fa-solid fa-star sta"></i><i class="fa-solid fa-star "></i><i
+                                                    class="fa-solid fa-star "></i><i class="fa-solid fa-star "></i>
+                                                <span lng-tag="4.5 and up">2 and up</span>
+                                            </p>
+                                        </div>
+                                        <div class="content-c">
+                                            <input type="checkbox" name="sarech[]" value="1" id=""
+                                                class="me-1">
+                                            <p class="m-0"><i class="fa-solid fa-star sta"></i><i
+                                                    class="fa-solid fa-star "></i><i class="fa-solid fa-star "></i><i
+                                                    class="fa-solid fa-star "></i><i class="fa-solid fa-star "></i>
+                                                <span lng-tag="4.5 and up">1 and up</span>
+                                            </p>
+                                        </div>
+                                        <button type="submit" class="btn-outline-primary">Filter</button>
 
 
-                                   </div>
 
-                               </div>
-                           </div>
-                       </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
                     </div>
 
                 </div>
@@ -125,11 +140,12 @@
                             <div class="image">
                                 <a href="{{ route('courseShow', $course->id) }}">
                                     <img src="{{ asset('requirement/uploads/course_photo/' . $course->course_photo) }}"
-                                        alt="" width="" class="img-fluid baby">
+                                        alt="" width="" class="img-fluid baby" style="">
                                 </a>
                             </div>
                             <div class="content">
-                                <a href="{{ route('courseShow', $course->id) }}" style="text-decoration: none; color:#000">
+                                <a href="{{ route('courseShow', $course->id) }}"
+                                    style="text-decoration: none; color:#000">
                                     <p class="fw-bold pp-1" style="text-transform: capitalize; font-size: 20px"
                                         lng-tag="Motion">
                                         {{ $course->course_name }}</p>
@@ -142,47 +158,45 @@
                                 <span class="number">({{ $course->rate }})</span>
 
 
-                                    @php
-                                        $rating = $course->rate;
-                                        $starcount =floor($rating);
-                                        $fraction = $rating - $starcount;
-                                    @endphp
-                                @if($rating== 0)
+                                @php
+                                    $rating = $course->rate;
+                                    $starcount = floor($rating);
+                                    $fraction = $rating - $starcount;
+                                @endphp
+                                @if ($rating == 0)
                                     <i class="fa-solid fa-star"></i>
                                     <i class="fa-solid fa-star"></i>
                                     <i class="fa-solid fa-star"></i>
                                     <i class="fa-solid fa-star"></i>
                                     <i class="fa-solid fa-star"></i>
                                 @else
-                                    @foreach (range(1,$starcount) as $i)
+                                    @foreach (range(1, $starcount) as $i)
                                         <i class="fa-solid fa-star star"></i>
                                     @endforeach
 
-                                    @if($rating!=5)
-                                            @if ($fraction == 0 )
-                                                <i class="fa-solid fa-star"></i>
-                                            @elseif ($fraction > 0.5 )
-                                                <i class="fa-solid fa-star star"></i>
-                                            @else
-                                                <i class="fa-solid fa-star"></i>
-                                            @endif
+                                    @if ($rating != 5)
+                                        @if ($fraction == 0)
+                                            <i class="fa-solid fa-star"></i>
+                                        @elseif ($fraction > 0.5)
+                                            <i class="fa-solid fa-star star"></i>
+                                        @else
+                                            <i class="fa-solid fa-star"></i>
                                         @endif
+                                    @endif
 
-                                @if($starcount != 4 && $rating!=5)
-
-                                    @foreach (range(1, 4 - $starcount) as $i)
+                                    @if ($starcount != 4 && $rating != 5)
+                                        @foreach (range(1, 4 - $starcount) as $i)
+                                            <i class="fa-solid fa-star "></i>
+                                        @endforeach
+                                    @elseif($starcount != 4 && $starcount < 0.5 && $rating != 5)
                                         <i class="fa-solid fa-star "></i>
-                                    @endforeach
-                                @elseif($starcount != 4 && $starcount<0.5 && $rating!=5)
-                                    <i class="fa-solid fa-star "></i>
-
-                                @endif
+                                    @endif
                                 @endif
 
 
 
 
-                                <span class="num"><span class="number"></span>({{$course->rateall->count()}})</span>
+                                <span class="num"><span class="number"></span>({{ $course->rateall->count() }})</span>
                                 <ul>
                                     @if ($course->lectures)
                                         @if (count($course->lectures) === 1)
@@ -205,21 +219,21 @@
                                 @endif
 
                                 <div class="icon">
-{{--<form id="formlike"  method="post" action="{{route('courseLike')}}">--}}
-{{--    <input id="inputlike{{$course->id}}" name="like" type="hidden" value="">--}}
-@auth()
-    <button onclick="like({{$course->id}})"  class="svg-1">
-        <div id="icon">
-            <svg class="svg-1" width="30" height="30" fill="currentColor">
-                <use  href="{{ (in_array( $course->id, $like))?'#heart-fill':'#heart'}}">
-                </use>
+                                    {{-- <form id="formlike"  method="post" action="{{route('courseLike')}}"> --}}
+                                    {{--    <input id="inputlike{{$course->id}}" name="like" type="hidden" value=""> --}}
+                                    @auth()
+                                        <button onclick="like({{ $course->id }})" id="button" class="button">
+                                            <div id="icon">
+                                                <svg class="svg-1" width="30" height="30" fill="currentColor">
+                                                    <use href="{{ in_array($course->id, $like) ? '#heart-fill' : '#heart' }}">
+                                                    </use>
 
-            </svg>
-        </div>
-    </button>
+                                                </svg>
+                                            </div>
+                                        </button>
                                     @endauth
 
-{{--</form>--}}
+                                    {{-- </form> --}}
 
                                 </div>
                             </div>
@@ -244,26 +258,25 @@
     <script src="{{ asset('requirement/pages/js/index.js') }}"></script>
 
     <script>
-    function like(id){
-        // $('#formlike').submit(function(e){
-     // const like=$('#inputlike'+id).val('1');
-    $.ajax({
-    type : 'post',
-    url  : '{{route('courseLike')}}',
-    data : {
-    _token:'{{csrf_token()}}',
-     // like:like,
-     course:id
-    },
-    success: function(res) {
-       $('#inputlike'+id).val('0');
-    },
-    error: function (data) {
-    console.log('Error:', data);
-    }
-    })
-    }
+        function like(id) {
+            // $('#formlike').submit(function(e){
+            // const like=$('#inputlike'+id).val('1');
+            $.ajax({
+                type: 'post',
+                url: '{{ route('courseLike') }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    // like:like,
+                    course: id
+                },
+                success: function(res) {
+                    $('#inputlike' + id).val('0');
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                }
+            })
+        }
         // )}
-
     </script>
 @endsection

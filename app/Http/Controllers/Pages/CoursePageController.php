@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pages;
 
 use App\Models\Cart;
+use App\Models\Category;
 use App\Models\Course;
 use App\Models\CourseUser;
 use App\Models\Like;
@@ -38,6 +39,7 @@ class CoursePageController extends Controller
     public function all(Request $request)
 
     {
+        $category=Category::select(['category_name','id'])->get();
         if($request->has('sarech')){
 
             $like=Like::where('user_id',Auth::id())->pluck('course_id')->toArray();
@@ -46,9 +48,24 @@ class CoursePageController extends Controller
                 $user = auth()->user()->id;
                 $cart = Cart::where('user_id', '=', $user)->get();
                 $count = Cart::where('user_id', $user)->count();
-                return view('sensorial.pages.course.courses', compact('courses','cart','count','like'));
+                return view('sensorial.pages.course.courses', compact('courses','cart','count','like','category'));
             } else {
-                return view('sensorial.pages.course.courses', compact('courses','like'));
+                return view('sensorial.pages.course.courses', compact('courses','like','category'));
+            }
+        }
+        if($request->has('filter')) {
+            $like = Like::where('user_id', Auth::id())->pluck('course_id')->toArray();
+
+                $idd = Course::whereIn('category_id', $request->filter)->pluck('id');
+            $courses=Course::whereIn('id', $idd)->get();
+
+            if(auth()->user()){
+                $user = auth()->user()->id;
+                $cart = Cart::where('user_id', $user)->get();
+                $count = Cart::where('user_id', $user)->count();
+                return view('sensorial.pages.course.courses', compact('courses','cart','count','like','category'));
+            } else {
+                return view('sensorial.pages.course.courses', compact('courses','like','category'));
             }
         }
 
@@ -58,9 +75,9 @@ class CoursePageController extends Controller
             $user = auth()->user()->id;
             $cart = Cart::where('user_id', '=', $user)->get();
             $count = Cart::where('user_id', $user)->count();
-            return view('sensorial.pages.course.courses', compact('courses','cart','count','like'));
+            return view('sensorial.pages.course.courses', compact('courses','cart','count','like','category'));
         } else {
-            return view('sensorial.pages.course.courses', compact('courses','like'));
+            return view('sensorial.pages.course.courses', compact('courses','like','category'));
         }
     }
     public function postlike(Request $request){
