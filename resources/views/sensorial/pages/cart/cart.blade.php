@@ -67,10 +67,14 @@
                         <button type="button" class="form-control input-1" data-toggle="modal" data-target="#exampleModal">
                             Pay in installments
                         </button>
-                        <a href="{{ route('checkout.premium') }}">
+                        <button type="button" class="form-control input-1" data-toggle="modal" data-target="#exampleModal2">
+                            Pay a premium
+                        </button>
+
+                        {{-- <a href="{{ route('checkout.premium') }}">
                             <input type="submit" name="" id="" value="Pay a premium"
                                 class="form-control input-1">
-                        </a>
+                        </a> --}}
 
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -100,14 +104,44 @@
                                             </select>
                                             <br>
                                             <br>
-                                            <select class="custom-select" name="course_id" id="course_id">
-                                                <option disabled value="select" lng-tag="Select a duration">Select a
-                                                    duration</option>
-                                                <option value="1" >1</option>
-                                                <option value="2" >2</option>
-                                                <option value="3" >3</option>
-                                            </select>
 
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="form-control input-1">Go</button>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="h6" lng-tag="Choose how many months you want to pay the course fee">
+                                            <b>Choose course </b>
+                                        </p>
+                                        <br>
+                                        <form action="{{ route('checkout.premium') }}" method="POST" id="form">
+                                            @csrf
+                                            <select class="custom-select" name="course_id" id="course_id">
+                                                <option disabled value="select" lng-tag="Select a duration">Select course</option>
+                                                @foreach ($courses as $item )
+                                                <option value="{{ $item->course_id }}">{{ $item->courses->course_name }}</option>
+                                                <option value="{{ $item->course_id }}">{{ $item->courses->course_name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <br>
+                                            <br>
 
                                     </div>
                                     <div class="modal-footer">
@@ -149,6 +183,8 @@
     <script>
         $('select[name="installment"]').on('change', function(e) {
             e.preventDefault();
+            alert('dvdsv');
+
             var time_installment = $('#installment').val();
             $.ajax({
                 url: "{{ URL::to('sensorial/thanksInstallment') }}/" + time_installment ,
@@ -156,16 +192,20 @@
                 dataType: "json",
             });
         });
-        // $('select[name="course_id"]').on('change', function(e) {
-        //     e.preventDefault();
-        //     var course_id = $('#course_id').val();
-        //     alert(course_id);
-        //     $.ajax({
-        //         url: "{{ URL::to('sensorial/course_id') }}/" + course_id,
-        //         type: "GET",
-        //         dataType: "json",
-        //     });
 
+    </script>
+
+    <script>
+         $('select[name="course_id"]').on('change', function(e) {
+            e.preventDefault();
+            var course_id = $('#course_id').val();
+            alert(course_id);
+            $.ajax({
+                url: "{{ URL::to('sensorial/thanks_premium') }}/" + course_id ,
+                type: "GET",
+                dataType: "json",
+            });
+        });
     </script>
 
 @endsection

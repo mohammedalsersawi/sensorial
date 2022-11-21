@@ -9,5 +9,9 @@ class CourseUser extends Model
 {
     use HasFactory;
     protected $guarded=[];
+    public function courses()
+    {
+        return $this->belongsTo(Course::class ,'course_id');
+    }
 
 }

@@ -56,11 +56,12 @@ class CartPageController extends Controller
             $cart = Cart::where('user_id', '=', $user)->whereNull('order_id')->get();
             $count = Cart::where('user_id', $user)->count();
             $amount = 0;
+            $courses = CourseUser::where(['user_id' => $user , 'status' => 0])->get();
             foreach ($cart as $car) :
                 $amount +=  $car->price;
             endforeach;
             $totel = $amount;
-            return view('sensorial.pages.cart.cart', compact('cart', 'count', 'totel'));
+            return view('sensorial.pages.cart.cart', compact('cart', 'count', 'totel' ,'courses'));
         } else {
             return view('sensorial.pages.cart.cart');
         }
@@ -263,8 +264,9 @@ class CartPageController extends Controller
         }
     }
 
-    public function checkout_premium()
+    public function checkout_premium(Request $request)
     {
+        $course_id =  $request->course_id;
         $Installments = Installment::where('user_id', Auth::id())->latest()->first();
         if ($Installments->due_installments > 0) {
             $amount = round($Installments->Paid, 2);
@@ -290,15 +292,16 @@ class CartPageController extends Controller
             curl_close($ch);
             $responseData = json_decode($responseData, true);
             $checkoutId = $responseData['id'];
-            return view('sensorial.pages.cart.premium', compact('checkoutId', 'Installments', 'totel'));
+            return view('sensorial.pages.cart.premium', compact('checkoutId', 'Installments', 'totel' , 'course_id'));
         } else {
             toastr()->warning('لا يوجد اقساط');
             return redirect()->back();
         }
     }
 
-    public function thanks_premium()
+    public function thanks_premium($course_id)
     {
+        return $course_id;
         $Installments = Installment::where('user_id', Auth::id())->latest()->first();
         $amount = round($Installments->Paid, 2);
         $resourcePath = request()->resourcePath;

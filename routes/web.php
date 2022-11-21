@@ -157,9 +157,9 @@ Route::prefix('sensorial')->group(function () {
     Route::get('thanks', [CartPageController::class, 'thanks'])->name('site.thanks');
     Route::post('installments', [CartPageController::class, 'checkout_installments'])->name('installments');
     Route::get('thanksInstallment/{count}', [CartPageController::class, 'thanksInstallment'])->name('thanks.Installment');
-    Route::get('checkout_premium', [CartPageController::class, 'checkout_premium'])->name('checkout.premium');
-    Route::get('thanks_premium', [CartPageController::class, 'thanks_premium'])->name('thanks.premium');
-    Route::get('course_id/{course_id}', [CartPageController::class, 'thanksInstallment'])->name('thanks.course_id');
+    Route::post('checkout_premium', [CartPageController::class, 'checkout_premium'])->name('checkout.premium');
+    Route::get('thanks_premium/{course_id}', [CartPageController::class, 'thanks_premium'])->name('thanks.premium');
+    // Route::get('course_id/{course_id}', [CartPageController::class, 'thanksInstallment'])->name('thanks.course_id');
 
 
 
@@ -167,7 +167,9 @@ Route::prefix('sensorial')->group(function () {
     Route::prefix('view-course')->group(function () {
         Route::get('{id}', [ViewCourseController::class, 'show'])->name('viewCourse');
         Route::get('lecture/{id}', [ViewCourseController::class, 'showLecture'])->name('viewLecture');
-        Route::get('lecture/reviews/{id}', [ViewCourseController::class, 'reviews'])->name('reviews');
+        Route::get('lecture/reviews/{c_id}', [ViewCourseController::class, 'reviews'])->name('reviews');
+        Route::get('lecture/reviews/{c_id}', [ViewCourseController::class, 'reviews'])->name('reviews');
+        Route::post('add-comment', [ViewCourseController::class, 'add_comment'])->name('add_comment');
     });
 
     // Checkout
