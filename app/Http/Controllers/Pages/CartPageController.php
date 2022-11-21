@@ -301,8 +301,8 @@ class CartPageController extends Controller
 
     public function thanks_premium($course_id)
     {
-        return $course_id;
-        $Installments = Installment::where('user_id', Auth::id())->latest()->first();
+        $Installments = Installment::where(['user_id' => Auth::id() , 'course_id' => 4])->latest()->first();
+        $CourseUser = CourseUser::where(['user_id' => Auth::id() , 'course_id' => 4])->latest()->first();
         $amount = round($Installments->Paid, 2);
         $resourcePath = request()->resourcePath;
         $url = "https://eu-test.oppwa.com/$resourcePath";
@@ -339,6 +339,9 @@ class CartPageController extends Controller
                 'user_id' => Auth::id(),
                 'tranaction_id' => $responseData['id'],
                 'order_id' => $order->id
+            ]);
+            $CourseUser->update([
+                'status' => 1,
             ]);
             //event(new sendmail($data));
             $job = new sendmailjop($data);

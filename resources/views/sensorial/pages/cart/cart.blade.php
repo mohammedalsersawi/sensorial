@@ -67,7 +67,8 @@
                         <button type="button" class="form-control input-1" data-toggle="modal" data-target="#exampleModal">
                             Pay in installments
                         </button>
-                        <button type="button" class="form-control input-1" data-toggle="modal" data-target="#exampleModal2">
+                        <button type="button" class="form-control input-1" data-toggle="modal"
+                            data-target="#exampleModal2">
                             Pay a premium
                         </button>
 
@@ -134,10 +135,12 @@
                                         <form action="{{ route('checkout.premium') }}" method="POST" id="form">
                                             @csrf
                                             <select class="custom-select" name="course_id" id="course_id">
-                                                <option disabled value="select" lng-tag="Select a duration">Select course</option>
-                                                @foreach ($courses as $item )
-                                                <option value="{{ $item->course_id }}">{{ $item->courses->course_name }}</option>
-                                                <option value="{{ $item->course_id }}">{{ $item->courses->course_name }}</option>
+                                                <option disabled value="select" lng-tag="Select a duration">Select course
+                                                </option>
+                                                @foreach ($courses as $item)
+                                                    <option id="course_id1" value="{{ $item->course_id }}">
+                                                        {{ $item->courses->course_name }}</option>
+
                                                 @endforeach
                                             </select>
                                             <br>
@@ -187,17 +190,17 @@
 
             var time_installment = $('#installment').val();
             $.ajax({
-                url: "{{ URL::to('sensorial/thanksInstallment') }}/" + time_installment ,
+                url: "{{ URL::to('sensorial/thanksInstallment') }}/" + time_installment,
                 type: "GET",
                 dataType: "json",
             });
         });
-
     </script>
 
     <script>
-         $('select[name="course_id"]').on('change', function(e) {
+        $('#course_id').on('change', function() {
             e.preventDefault();
+            alert('ddd');
             var course_id = $('#course_id').val();
             alert(course_id);
             $.ajax({
