@@ -56,9 +56,9 @@
 
 
             <hr>
-            <p class="pp-4" lng-tag="Total">Total:</p>
+            {{-- <p class="pp-4" lng-tag="Total">Total:</p>
             <span class="pp-5">$39.98</span>
-            <del class="pp-3">$169.98</del>
+            <del class="pp-3">$169.98</del> --}}
             <br><br>
             <a href=""><button type="button" class="btn btn-danger button-1"
                     lng-tag="cart">Go to

@@ -204,6 +204,7 @@ $messagesCount = Contact::all()->count();
                         <li class="menu-title">
                             <span>Users</span>
                         </li>
+
                         <li class="submenu">
                             <a href="#" class="noti-dot"><i class="las la-user-shield"></i> <span>Admin</span>
                                 <span class="menu-arrow"></span></a>

@@ -32,10 +32,11 @@ class CategoryPageController extends Controller
 
     }
     public function ShowCourseCategory($id){
+        $category=Category::select(['category_name','id'])->get();
         $like=Like::where('user_id',Auth::id())->pluck('course_id')->toArray();
 
         $courses= Category::findOrFail($id)->courses;
-            return view('sensorial.pages.course.courses', compact('courses','like'));
+            return view('sensorial.pages.course.courses', compact('courses','like','category'));
 
     }
 
