@@ -23,9 +23,9 @@
                         </div><br>
                         <p>{{$biography->dest}} </p>
                         <br>
-                        <form action="" class="position-relative">
+                        <form action="{{route('coursesShow')}}" method="get" class="position-relative">
                             <i class="fa-solid fa-magnifying-glass position-absolute"></i>
-                            <input type="text" name="" id="" placeholder="Search Your Course need"
+                            <input type="text" name="ser" id="" placeholder="Search Your Course need"
                                 class="form-control">
                             <button class="position-absolute" lng-tag="Search">Search</button>
                         </form>
@@ -87,7 +87,7 @@
                 </div>
                 <div class="col-sm-6 col-md mt-5  text-center text-md-start">
                     <div class="Number margin">
-                        <span>2000+</span>
+                        <span>{{$arr[3]}}+</span>
                         <p lng-tag="positive">positive<br> Feedback</p>
                     </div>
                     <div class="Number">
@@ -183,13 +183,50 @@
                                     {{ $course->course_detail }}</p>
                                 <p class="p1" style="text-transform: capitalize" lng-tag="Dorothy">By
                                     {{ $course->instructor->name }}</p>
-                                <i class="fa-solid fa-star star"></i>
-                                <i class="fa-solid fa-star star"></i>
-                                <i class="fa-solid fa-star star"></i>
-                                <i class="fa-solid fa-star star"></i>
-                                <i class="fa-solid fa-star star"></i>
 
-                                <span class="num"><span class="number">5.0s</span>(+100k)</span>
+
+                                @php
+                                    $rating = $course->rate;
+                                    $starcount =floor($rating);
+                                    $fraction = $rating - $starcount;
+                                @endphp
+                                @if($rating== 0)
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                @else
+                                    @foreach (range(1,$starcount) as $i)
+                                        <i class="fa-solid fa-star star"></i>
+                                    @endforeach
+
+                                    @if($rating!=5)
+                                        @if ($fraction == 0 )
+                                            <i class="fa-solid fa-star"></i>
+                                        @elseif ($fraction > 0.5 )
+                                            <i class="fa-solid fa-star star"></i>
+                                        @else
+                                            <i class="fa-solid fa-star"></i>
+                                        @endif
+                                    @endif
+
+                                    @if($starcount != 4 && $rating!=5)
+
+                                        @foreach (range(1, 4 - $starcount) as $i)
+                                            <i class="fa-solid fa-star "></i>
+                                        @endforeach
+                                    @elseif($starcount != 4 && $starcount<0.5 && $rating!=5)
+                                        <i class="fa-solid fa-star "></i>
+
+                                    @endif
+                                @endif
+
+
+
+
+                                <span class="num"><span class="number"></span>({{$course->rateall->count()}})</span>
+                                </p>
 
                                 <div class="end-box position-relative">
                                     <div class="heart-boxx">

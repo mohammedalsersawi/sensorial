@@ -80,7 +80,7 @@
 
                         <div class="href mt-4">
                             <a href="" lng-tag="Description">Description</a>
-                            <a href="{{ route('reviews') }}" lng-tag="Reviews">Reviews </a>
+                            <a href="{{ route('reviews',$id) }}" lng-tag="Reviews">Reviews </a>
                         </div>
                         <p class="p-11 mt-4" lng-tag="Intellectual">{{ $lecture->description }}?</p>
                     </div>

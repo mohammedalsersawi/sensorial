@@ -9,5 +9,13 @@ class CourseUser extends Model
 {
     use HasFactory;
     protected $guarded=[];
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+    public function courses()
+    {
+        return $this->belongsTo(Course::class ,'course_id');
+    }
 
 }

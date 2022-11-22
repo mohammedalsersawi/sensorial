@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pages;
 
 use App\Models\Cart;
+use App\Models\Category;
 use App\Models\Course;
 use App\Models\CourseUser;
 use App\Models\Like;
@@ -16,7 +17,9 @@ class CoursePageController extends Controller
     //
     public function show( $id)
     {
-       $show=CourseUser::where('user_id',Auth::id())->where('course_id',$id)->exists();
+        $category=Category::select(['category_name','id'])->get();
+
+        $show=CourseUser::where('user_id',Auth::id())->where('course_id',$id)->exists();
         $course = Course::find($id);
         $rate=rateing::where('user_id',Auth::id())->where('course_id',$id)->exists();
         $courses = Course::where('id', '<>', $id)->get()->take(4);
@@ -29,38 +32,49 @@ class CoursePageController extends Controller
             $count = Cart::where('user_id', $user)->count();
 
 
-            return view('sensorial.pages.course.course', compact('course','courses','cart','count','rate','show'));
+            return view('sensorial.pages.course.course', compact('course','courses','cart','count','rate','show','category'));
         } else {
-            return view('sensorial.pages.course.course', compact('course','courses','rate','show'));
+            return view('sensorial.pages.course.course', compact('course','courses','rate','show','category'));
         }
     }
 
     public function all(Request $request)
 
     {
-        if($request->has('sarech')){
+        $like = Like::where('user_id', Auth::id())->pluck('course_id')->toArray();
 
-            $like=Like::where('user_id',Auth::id())->pluck('course_id')->toArray();
-            $courses = Course::where('rate','=',$request->sarech)->get();
-            if(auth()->user()){
-                $user = auth()->user()->id;
-                $cart = Cart::where('user_id', '=', $user)->get();
-                $count = Cart::where('user_id', $user)->count();
-                return view('sensorial.pages.course.courses', compact('courses','cart','count','like'));
-            } else {
-                return view('sensorial.pages.course.courses', compact('courses','like'));
-            }
+        $category=Category::select(['category_name','id'])->get();
+        if($request->has('sarech')){
+            $idd = Course::whereIn('rate', $request->sarech)->pluck('rate');
+            $courses=Course::whereIn('rate', $idd)->get();
+//            $courses = Course::where('rate','=',$request->sarech)->get();
+
+        }
+        elseif($request->has('filter')) {
+
+                $idd = Course::whereIn('category_id', $request->filter)->pluck('id');
+            $courses=Course::whereIn('id', $idd)->get();
+
+        }
+        elseif($request->has('ser')) {
+
+            $courses=Course::where('course_name', 'like','%'.$request->ser.'%')->get();
+
+
+        }
+        else{
+            $courses = Course::all();
         }
 
         $like=Like::where('user_id',Auth::id())->pluck('course_id')->toArray();
-        $courses = Course::all();
+
         if(auth()->user()){
             $user = auth()->user()->id;
             $cart = Cart::where('user_id', '=', $user)->get();
             $count = Cart::where('user_id', $user)->count();
-            return view('sensorial.pages.course.courses', compact('courses','cart','count','like'));
+            return view('sensorial.pages.course.courses', compact('courses','cart','count','like','category'));
         } else {
-            return view('sensorial.pages.course.courses', compact('courses','like'));
+            return view('sensorial.pages.course.courses', compact('courses','like','category'));
         }
     }
     public function postlike(Request $request){
@@ -80,8 +94,10 @@ class CoursePageController extends Controller
 
         $like=Like::where('user_id',Auth::id())->pluck('course_id')->toArray();
         $courses=Course::whereIn('id',$like)->latest()->get();
+        $category=Category::select(['category_name','id'])->get();
 
-        return view('sensorial.pages.course.courses', compact('courses','courses','like'));
+
+        return view('sensorial.pages.course.courses', compact('courses','courses','like','category'));
     }
 
     public function rateing(Request $request,$course_id){

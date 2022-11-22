@@ -6,6 +6,7 @@ use App\Events\sendmail;
 use App\Jobs\sendmailjop;
 use App\Listeners\check;
 use App\Models\Cart;
+use App\Models\Category;
 use App\Models\Order;
 use App\Models\Course;
 use App\Models\Payment;
@@ -16,6 +17,7 @@ use App\Models\CourseUser;
 use App\Models\Installment;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class CartPageController extends Controller
 {
@@ -56,11 +58,12 @@ class CartPageController extends Controller
             $cart = Cart::where('user_id', '=', $user)->whereNull('order_id')->get();
             $count = Cart::where('user_id', $user)->count();
             $amount = 0;
+            $courses = CourseUser::where(['user_id' => $user , 'status' => 0])->get();
             foreach ($cart as $car) :
                 $amount +=  $car->price;
             endforeach;
             $totel = $amount;
-            return view('sensorial.pages.cart.cart', compact('cart', 'count', 'totel'));
+            return view('sensorial.pages.cart.cart', compact('cart', 'count', 'totel' ,'courses'));
         } else {
             return view('sensorial.pages.cart.cart');
         }
@@ -148,9 +151,16 @@ class CartPageController extends Controller
         // dd($responseData['result']['code']);
 
         if ($responseData['result']['code'] == '000.100.110') {
+            DB::beginTransaction();
+            try {
             $order = Order::create(['total' => $amount, 'user_id' => Auth::id()]);
             foreach ($carts as $cart) {
-            CourseUser::create(['course_id' => $cart->course_id, 'user_id' => Auth::id(), 'status' => 1]);
+           $coure= CourseUser::create(['course_id' => $cart->course_id, 'user_id' => Auth::id(), 'status' => 1]);
+          $po= $coure->course->category->power;
+          $ca=$coure->course->category_id;
+          Category::where('id',$ca)->update([
+              'power'=>$po+1
+          ]);
             };
             Cart::where('user_id', Auth::id())->whereNull('order_id')->update(['order_id' => $order->id]);
             Payment::create([
@@ -159,8 +169,13 @@ class CartPageController extends Controller
                 'tranaction_id' => $responseData['id'],
                 'order_id' => $order->id
             ]);
+            DB::commit();
             toastr()->success('نجحت عملية الشراء');
             return redirect()->route('homeShow');
+            }catch (Throwable $e){
+                DB::rollBack();}
+            toastr()->error('فشلت عملية الشراء');
+            return redirect()->back();
         } else {
             toastr()->error('فشلت عملية الشراء');
             return redirect()->back();
@@ -251,6 +266,7 @@ class CartPageController extends Controller
                 'count_installment' => $count,
                 'due_installments' => $count - 1,
             ]);
+
             toastr()->success('نجحت عملية الشراء');
             return redirect()->route('homeShow');
         } else {
@@ -262,8 +278,9 @@ class CartPageController extends Controller
         }
     }
 
-    public function checkout_premium()
+    public function checkout_premium(Request $request)
     {
+        $course_id =  $request->course_id;
         $Installments = Installment::where('user_id', Auth::id())->latest()->first();
         if ($Installments->due_installments > 0) {
             $amount = round($Installments->Paid, 2);
@@ -289,16 +306,17 @@ class CartPageController extends Controller
             curl_close($ch);
             $responseData = json_decode($responseData, true);
             $checkoutId = $responseData['id'];
-            return view('sensorial.pages.cart.premium', compact('checkoutId', 'Installments', 'totel'));
+            return view('sensorial.pages.cart.premium', compact('checkoutId', 'Installments', 'totel' , 'course_id'));
         } else {
             toastr()->warning('لا يوجد اقساط');
             return redirect()->back();
         }
     }
 
-    public function thanks_premium()
+    public function thanks_premium($course_id)
     {
-        $Installments = Installment::where('user_id', Auth::id())->latest()->first();
+        $Installments = Installment::where(['user_id' => Auth::id() , 'course_id' => 4])->latest()->first();
+        $CourseUser = CourseUser::where(['user_id' => Auth::id() , 'course_id' => 4])->latest()->first();
         $amount = round($Installments->Paid, 2);
         $resourcePath = request()->resourcePath;
         $url = "https://eu-test.oppwa.com/$resourcePath";
@@ -335,6 +353,9 @@ class CartPageController extends Controller
                 'user_id' => Auth::id(),
                 'tranaction_id' => $responseData['id'],
                 'order_id' => $order->id
+            ]);
+            $CourseUser->update([
+                'status' => 1,
             ]);
             //event(new sendmail($data));
             $job = new sendmailjop($data);
