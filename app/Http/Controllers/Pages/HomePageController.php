@@ -22,8 +22,9 @@ class HomePageController extends Controller
         $CountCourses = DB::table('courses')->count();
         $CountUsers = DB::table('users')->count();
         $CountCategories = DB::table('categories')->count();
+        $comments = DB::table('comments')->count();
       //  $users = DB::table('users')->count();
-        $arr=[$CountCourses,$CountUsers,$CountCategories];
+        $arr=[$CountCourses,$CountUsers,$CountCategories,$comments];
 
  if(auth()->user()){
             $user = auth()->user()->id;

@@ -28,7 +28,7 @@
 									<img alt="" src="assets/img/profiles/avatar-02.jpg">
 								</div>
 								<div class="welcome-det">
-									<h3>Welcome, {{Auth::user()->name}}</h3>
+									<h3>Welcome, {{Auth::guard('instructor')->user()->name}}</h3>
 									<p>Monday, 20 May 2019</p>
 								</div>
 							</div>
