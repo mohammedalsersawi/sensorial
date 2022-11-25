@@ -1,5 +1,5 @@
-{{-- @extends('sensorial.dashboard.admins.admin-parent') --}}
 
+@extends('sensorial.dashboard.instructors.instructor-parent')
 
 @section('title', 'Sections')
 
@@ -81,11 +81,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($sections as $key => $section)
+                        @foreach ($sections as $section)
                             <tr>
-                                <td id="row_id">{{ ++$key }}</td>
+
+                                <td id="row_id"></td>
                                 <td class="section" style="font-weight: 600">{{ $section->section_name }}</td>
                                 <td class="lecture">
+
                                     <div class="dropdown action-label">
                                         <a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#"
                                             data-toggle="dropdown" aria-expanded="false">

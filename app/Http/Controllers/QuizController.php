@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Quiz;
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class QuizController extends Controller
@@ -16,10 +17,15 @@ class QuizController extends Controller
      */
     public function index()
     {
-        //
+        if (Auth::guard('admin')->check()) {
         $quizzes = Quiz::all();
         $courses = Course::all();
         return view('sensorial.dashboard.quizzes.index', compact('quizzes','courses'));
+        }else {
+            $quizzes = Quiz::all();
+            $courses = Course::all();
+        return view('sensorial.dashboard.quizzes.index_instructor', compact('quizzes','courses'));
+        }
     }
 
     /**
@@ -43,8 +49,8 @@ class QuizController extends Controller
         //
         $validator = Validator($request->all(),[
             'quiz_name' => 'required|string',
-            
-            
+
+
         ]);
 
         if(!$validator->fails())

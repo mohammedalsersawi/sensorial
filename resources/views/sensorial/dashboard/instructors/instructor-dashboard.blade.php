@@ -29,6 +29,7 @@
                         </div>
                         <div class="welcome-det">
                             <h3>$${{ Auth::guard('instructor')->user() }}</h3>
+
                             <h3>Welcome</h3>
                             <h3>Welcome</h3>
                             <p>Monday, 20 May 2019</p>

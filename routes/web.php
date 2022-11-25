@@ -83,7 +83,8 @@ Route::prefix('sensorial')->group(function () {
     // Home
     Route::get('/home', [HomePageController::class, 'show'])->name('homeShow');
     Route::get('home/Categories', [HomePageController::class, 'CategoriesShow'])->name('CategoriesShow');
-
+    Route::get("showquize/{id}" , [HomePageController::class , 'quize'])->name('showquize');
+    Route::post("resltquize/{id}" , [HomePageController::class , 'resltquize'])->name('resltquize');
 
 
     // My_Profile
@@ -117,7 +118,6 @@ Route::prefix('sensorial')->group(function () {
     Route::prefix('category')->group(function () {
         Route::get('/', [CategoryPageController::class, 'show'])->name('categoryShow');
         Route::get('{id}', [CategoryPageController::class, 'ShowCourseCategory'])->name('categorcourseyShow');
-
     });
 
 
@@ -143,7 +143,7 @@ Route::prefix('sensorial')->group(function () {
     Route::prefix('course')->group(function () {
         Route::get('/', [CoursePageController::class, 'all'])->name('coursesShow');
         Route::get('{id}', [CoursePageController::class, 'show'])->name('courseShow');
-        Route::post('rating/{course_id}',[CoursePageController::class, 'rateing'])->name('rateing');
+        Route::post('rating/{course_id}', [CoursePageController::class, 'rateing'])->name('rateing');
     });
     Route::get('like/courses', [CoursePageController::class, 'showlike'])->name('likecourseShow');
     Route::post('like/courses', [CoursePageController::class, 'postlike'])->name('courseLike');
@@ -203,6 +203,17 @@ Route::prefix('sensorial')->group(function () {
         })->name('instructor.dashboard');
 
         // 2- Operations
+        Route::group(['middleware' => 'auth:admin,instructor'], function () {
+            Route::resource('course', CourseController::class);
+            Route::resource('section', SectionController::class);
+            Route::resource('lecture', LectureController::class);
+            Route::resource('quiz', QuizController::class);
+            Route::resource('question', QuestionController::class);
+            Route::resource('option', OptionController::class);
+            Route::get('classes/{id}', [LectureController::class, 'getclasses'])->name('getclasses');
+
+        });
+
 
         Route::group(['middleware' => 'auth:admin'], function () {
 
@@ -224,22 +235,19 @@ Route::prefix('sensorial')->group(function () {
 
             Route::resource('category', CategoryController::class);
 
-            Route::resource('course', CourseController::class);
+
+
+
+
 
             //////////////////////////////////////////////////////////
 
-            Route::resource('section', SectionController::class);
             Route::resource('platForm', ResultController::class);
 
 
-            Route::resource('quiz', QuizController::class);
 
-            Route::resource('question', QuestionController::class);
 
-            Route::resource('option', OptionController::class);
 
-            Route::resource('lecture', LectureController::class);
-            Route::get('classes/{id}', [LectureController::class , 'getclasses'])->name('getclasses');
 
 
             Route::resource('learn', LearnController::class);

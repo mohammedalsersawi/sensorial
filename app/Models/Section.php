@@ -13,6 +13,10 @@ class Section extends Model
     {
         return $this->belongsTo(Course::class);
     }
+    public function inst()
+    {
+        return $this->belongsTo(Instructor::class);
+    }
 
     public function lectures()
     {
@@ -22,5 +26,9 @@ class Section extends Model
     public function quizzes()
     {
         return $this->hasMany(Lecture::class);
+    }
+    public function sections()
+    {
+        return $this->belongsTo(Section::class);
     }
 }

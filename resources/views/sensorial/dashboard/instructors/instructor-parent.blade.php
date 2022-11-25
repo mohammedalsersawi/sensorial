@@ -349,6 +349,21 @@
 							<li class="menu-title">
 								<span>Tables</span>
 							</li>
+
+                            <li class="submenu">
+                                <a href="#" class=""><i class="las la-bars"></i> <span>Sections</span> <span
+                                        class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+                                    <li><a href="{{ route('section.index') }}">All Sections</a></li>
+                                </ul>
+                            </li>
+                            <li class="submenu">
+                                <a href="#" class=""><i class="las la-photo-video"></i></i>
+                                    <span>Lectures</span> <span class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+                                    <li><a href="{{ route('lecture.index') }}">All Lectures</a></li>
+                                </ul>
+                            </li>
                             <li class="submenu">
                                 <a href="#" class=""><i class="las la-pen-alt"></i> <span>Quizzes</span>
                                     <span class="menu-arrow"></span></a>
