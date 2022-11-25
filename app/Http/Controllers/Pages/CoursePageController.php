@@ -20,7 +20,7 @@ class CoursePageController extends Controller
         $category=Category::select(['category_name','id'])->get();
 
         $show=CourseUser::where('user_id',Auth::id())->where('course_id',$id)->exists();
-        $course = Course::find($id);
+        $course = Course::findOrFail($id);
         $rate=rateing::where('user_id',Auth::id())->where('course_id',$id)->exists();
         $courses = Course::where('id', '<>', $id)->get()->take(4);
 
@@ -66,8 +66,6 @@ class CoursePageController extends Controller
             $courses = Course::all();
         }
 
-        $like=Like::where('user_id',Auth::id())->pluck('course_id')->toArray();
-
         if(auth()->user()){
             $user = auth()->user()->id;
             $cart = Cart::where('user_id', '=', $user)->get();
@@ -85,7 +83,7 @@ class CoursePageController extends Controller
                 'course_id' => $request->course
             ]);
         }else{
-            $course=Like::where('user_id',Auth::id())->where('course_id',$request->course)->delete();
+           Like::where('user_id',Auth::id())->where('course_id',$request->course)->delete();
 
         }
 
