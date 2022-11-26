@@ -86,6 +86,7 @@ class CoursePageController extends Controller
            Like::where('user_id',Auth::id())->where('course_id',$request->course)->delete();
 
         }
+        return view('sensorial.pages.home');
 
     }
     public function showlike(){

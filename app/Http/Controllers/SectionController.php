@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Lecture;
-use Symfony\Component\HttpFoundation\Response;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class SectionController extends Controller
 {
@@ -17,11 +19,23 @@ class SectionController extends Controller
      */
     public function index()
     {
-        //
-        $sections = Section::all();
-        $lectures = Lecture::all();
-        $courses = Course::all();
-        return view('sensorial.dashboard.sections.index', compact('sections', 'lectures', 'courses') );
+
+        if (Auth::guard('admin')->check()) {
+            $sections = Section::all();
+            $lectures = Lecture::all();
+            $courses = Course::all();
+            return view('sensorial.dashboard.sections.index', compact('sections', 'lectures', 'courses'));
+        } else {
+            // $c = Course::with('sections')->where('instructor_id' , 1)->get();
+
+            $lectures = Lecture::all();
+            $id = Course::where('instructor_id', Auth::id())->pluck('id');
+            $courses = Course::where('instructor_id', Auth::id())->get();
+
+            $sections = Section::whereIn('course_id',$id)->get();
+
+            return view('sensorial.dashboard.sections.index_instructor', compact('sections', 'lectures', 'courses' ));
+        }
     }
 
     /**
@@ -43,13 +57,12 @@ class SectionController extends Controller
     public function store(Request $request)
     {
         //
-        $validator = Validator($request->all(),[
+        $validator = Validator($request->all(), [
             'section_name' => 'required|string',
             'course_id' => 'required',
         ]);
 
-        if(!$validator->fails())
-        {
+        if (!$validator->fails()) {
             $section = new Section();
             $section->section_name = $request->section_name;
             $section->course_id = $request->course_id;
@@ -58,13 +71,11 @@ class SectionController extends Controller
             return response()->json([
                 'message' => $isSaved ? "Created Successfully" : "Failed to Create"
             ], $isSaved ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST);
-
-            } else {
+        } else {
             //VALIDATION FAILED في حال فشل الفاليديشن
             return response()->json([
                 'message' => $validator->getMessageBag()->first()
             ], Response::HTTP_BAD_REQUEST);
-
         }
     }
 
@@ -101,12 +112,9 @@ class SectionController extends Controller
     {
         //
         $section = Section::find($id);
-        $validator = Validator($request->all(),[
+        $validator = Validator($request->all(), []);
 
-        ]);
-
-        if(!$validator->fails())
-        {
+        if (!$validator->fails()) {
 
             $section->section_name = $request->get('sec_name');
             $section->course_id = $request->get('cs_name');
@@ -115,13 +123,11 @@ class SectionController extends Controller
             return response()->json([
                 'message' => $isSaved ? "Updated Successfully" : "Failed to Update"
             ], $isSaved ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST);
-
-            } else {
+        } else {
             //VALIDATION FAILED في حال فشل الفاليديشن
             return response()->json([
                 'message' => $validator->getMessageBag()->first()
             ], Response::HTTP_BAD_REQUEST);
-
         }
     }
 
@@ -135,10 +141,10 @@ class SectionController extends Controller
     {
         //
         $isDeleted = $section->delete();
-        if($isDeleted){
-            return response()->json(['icon' => 'success' ,'title' => 'Success!' ,'text' => 'Deleted Successfuly' ,],Response::HTTP_OK);
+        if ($isDeleted) {
+            return response()->json(['icon' => 'success', 'title' => 'Success!', 'text' => 'Deleted Successfuly',], Response::HTTP_OK);
         } else {
-            return response()->json(['icon' => 'error' ,'title' => 'Failed!' ,'text' => 'Deleted Failed ' ,],Response::HTTP_BAD_REQUEST);
+            return response()->json(['icon' => 'error', 'title' => 'Failed!', 'text' => 'Deleted Failed ',], Response::HTTP_BAD_REQUEST);
         }
     }
 }

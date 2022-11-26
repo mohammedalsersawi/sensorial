@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CourseUser;
 use App\Models\Quiz;
 use App\Models\User;
 use App\Models\Learn;
@@ -13,6 +14,7 @@ use App\Models\Category;
 use App\Models\Instructor;
 use Illuminate\Http\Request;
 use App\Models\CoursesLearns;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class CourseController extends Controller
@@ -22,14 +24,28 @@ class CourseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
     public function index()
     {
         //
-        $courses = Course::all();
-        $categories = Category::all();
-        $instructors = Instructor::all();
 
-        return view('sensorial.dashboard.courses.index',compact('categories','courses','instructors'));
+        if (Auth::guard('admin')->check()) {
+            $courses = Course::all();
+            $categories = Category::all();
+            $instructors = Instructor::all();
+            return view('sensorial.dashboard.courses.index',compact('categories','courses','instructors'));
+
+
+        } else {
+            $courses = Course::where('instructor_id',Auth::guard('instructor')->user()->id)->get();
+            $categories = Category::all();
+            $instructors = Instructor::where('id',Auth::guard('instructor')->user()->id)->get();
+            return view('sensorial.dashboard.instructors.courses.index',compact('categories','courses','instructors'));
+
+
+        }
+
     }
 
     /**
@@ -51,7 +67,7 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         //
-        $validator = Validator($request->all(),[
+        $validator = Validator($request->all()->get(),[
             'course_name' => 'required|string',
             'course_detail' => 'required|string',
             'course_photo' => 'required',
@@ -97,16 +113,29 @@ class CourseController extends Controller
     public function show($id)
     {
         //
-        $course = Course::find($id);
-        $students = Student::where('course_id', '=', $id)->get();
-        $course_inst = $course->instructor->id;
-        $instructors = Instructor::where('id', '<>', $course_inst)->get();
-        $categories = Category::all();
-        $users = User::all();
-        $lectures = Lecture::where('course_id', '=', $id)->get();
-        $quizzes = Quiz::where('course_id', '=', $id)->get();
-        $learns = Learn::where('course_id', '=', $id)->get();
-        return view('sensorial.dashboard.courses.view-course', compact('course','quizzes','lectures','learns','students', 'users','instructors','categories'));
+        if (Auth::guard('admin')->check()) {
+            $course = Course::findOrFail($id);
+            $students = CourseUser::where('course_id', '=', $id)->get();
+            $course_inst = $course->instructor->id;
+            $instructors = Instructor::where('id', '<>', $course_inst)->get();
+            $categories = Category::all();
+            $users = User::all();            $lectures = Lecture::where('course_id', '=', $id)->get();
+            $quizzes = Quiz::where('course_id', '=', $id)->get();
+            $learns = Learn::where('course_id', '=', $id)->get();
+            return view('sensorial.dashboard.courses.view-course', compact('course','quizzes','lectures','learns','students', 'users','instructors','categories'));
+
+        } else {
+            $course = Course::findOrFail($id);
+            $students = CourseUser::where('course_id', '=', $id)->get();
+            $instructors = Instructor::where('id', '<>', Auth::guard('instructor')->user()->id)->get();
+            $categories = Category::all();
+            $users = User::all();
+            $lectures = Lecture::where('course_id', '=', $id)->get();
+            $quizzes = Quiz::where('course_id', '=', $id)->get();
+            $learns = Learn::where('course_id', '=', $id)->get();
+            return view('sensorial.dashboard.instructors.courses.view-course', compact('course','quizzes','lectures','learns','students', 'users','instructors','categories'));
+
+        }
     }
 
     /**
@@ -118,8 +147,8 @@ class CourseController extends Controller
     public function edit($id)
     {
         //
-        $course = Course::find($id);
-        $instructors = Instructor::all();
+        $course = Course::findOrFail($id);
+        $instructors = Instructor::where('id',Auth::guard('instructor')->user()->id)->get();
         $categories = Category::all();
         return response()->view('sensorial.dashboard.courses.edit',compact('categories','course','instructors'));
     }

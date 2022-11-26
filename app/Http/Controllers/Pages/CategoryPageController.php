@@ -40,6 +40,7 @@ class CategoryPageController extends Controller
 
     }
     public function ShowCourseCategory($id){
+        $category=Category::select(['category_name','id'])->get();
         $like=Like::where('user_id',Auth::id())->pluck('course_id')->toArray();
         $category=Category::select(['category_name','id'])->get();
 

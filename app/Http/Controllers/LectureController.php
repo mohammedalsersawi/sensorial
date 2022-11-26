@@ -7,6 +7,7 @@ use App\Models\Lecture;
 use App\Models\Section;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,11 +20,17 @@ class LectureController extends Controller
      */
     public function index()
     {
-        //
-        $lectures = Lecture::all();
-        $sections = Section::all();
-        $courses = Course::all();
-        return view('sensorial.dashboard.lectures.index', compact('lectures', 'sections' , 'courses'));
+        if (Auth::guard('admin')->check()) {
+            $lectures = Lecture::all();
+            $sections = Section::all();
+            $courses = Course::all();
+            return view('sensorial.dashboard.lectures.index', compact('lectures', 'sections', 'courses'));
+        } else {
+            $lectures = Lecture::all();
+            $sections = Section::all();
+            $courses = Course::all();
+            return view('sensorial.dashboard.lectures.index_instructor', compact('lectures', 'sections', 'courses'));
+        }
     }
 
     /**
@@ -74,7 +81,7 @@ class LectureController extends Controller
 
 
 
-        /*
+            /*
         $lecture = new Lecture();
         $validator = Validator($request->all(),[
             'lecture_name' => 'required|string',
@@ -111,8 +118,8 @@ class LectureController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         }
         */
+        }
     }
-}
 
     /**
      * Display the specified resource.
@@ -150,20 +157,18 @@ class LectureController extends Controller
     {
         //
         $lecture = Lecture::find($id);
-        $validator = Validator($request->all(),[
-        ]);
+        $validator = Validator($request->all(), []);
 
-        if(!$validator->fails())
-        {
-           $lecture->lecture_name = $request->get('lec_name');
-           $lecture->section_id = $request->get('sect_id');
-           $lecture->hours = $request->get('hs');
-           $lecture->minutes = $request->get('mn');
-           $lecture->announcement = $request->get('ann');
-           $lecture->description = $request->get('desc');
-           if ($request->hasFile('vid')){
-                $image = time() .'.'.$request -> vid->extension();
-                $request->vid->move(public_path('requirement/uploads/lecturres_videos/'),$image);
+        if (!$validator->fails()) {
+            $lecture->lecture_name = $request->get('lec_name');
+            $lecture->section_id = $request->get('sect_id');
+            $lecture->hours = $request->get('hs');
+            $lecture->minutes = $request->get('mn');
+            $lecture->announcement = $request->get('ann');
+            $lecture->description = $request->get('desc');
+            if ($request->hasFile('vid')) {
+                $image = time() . '.' . $request->vid->extension();
+                $request->vid->move(public_path('requirement/uploads/lecturres_videos/'), $image);
                 $lecture->video = $image;
             }
 
@@ -172,8 +177,7 @@ class LectureController extends Controller
             return response()->json([
                 'message' => $isSaved ? "Updated Successfully" : "Failed to Update"
             ], $isSaved ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST);
-
-            } else {
+        } else {
             //VALIDATION FAILED في حال فشل الفاليديشن
             return response()->json([
                 'message' => $validator->getMessageBag()->first()
@@ -191,10 +195,10 @@ class LectureController extends Controller
     {
         //
         $isDeleted = $lecture->delete();
-        if($isDeleted){
-            return response()->json(['icon' => 'success' ,'title' => 'Success!' ,'text' => 'Deleted Successfuly' ,],Response::HTTP_OK);
+        if ($isDeleted) {
+            return response()->json(['icon' => 'success', 'title' => 'Success!', 'text' => 'Deleted Successfuly',], Response::HTTP_OK);
         } else {
-            return response()->json(['icon' => 'error' ,'title' => 'Failed!' ,'text' => 'Deleted Failed ' ,],Response::HTTP_BAD_REQUEST);
+            return response()->json(['icon' => 'error', 'title' => 'Failed!', 'text' => 'Deleted Failed ',], Response::HTTP_BAD_REQUEST);
         }
     }
     public function getclasses($id)
