@@ -18,6 +18,7 @@ class CoursePageController extends Controller
     public function show( $id)
     {
         $category=Category::select(['category_name','id'])->get();
+        $like=Like::where('user_id',Auth::id())->pluck('course_id')->toArray();
 
         $show=CourseUser::where('user_id',Auth::id())->where('course_id',$id)->exists();
         $course = Course::findOrFail($id);
@@ -32,9 +33,9 @@ class CoursePageController extends Controller
             $count = Cart::where('user_id', $user)->count();
 
 
-            return view('sensorial.pages.course.course', compact('course','courses','cart','count','rate','show','category'));
+            return view('sensorial.pages.course.course', compact('course','courses','cart','count','rate','show','category','like'));
         } else {
-            return view('sensorial.pages.course.course', compact('course','courses','rate','show','category'));
+            return view('sensorial.pages.course.course', compact('course','courses','rate','show','category','like'));
         }
     }
 
@@ -86,7 +87,6 @@ class CoursePageController extends Controller
            Like::where('user_id',Auth::id())->where('course_id',$request->course)->delete();
 
         }
-        return view('sensorial.pages.home');
 
     }
     public function showlike(){

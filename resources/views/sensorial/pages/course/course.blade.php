@@ -123,14 +123,20 @@
                                 @else
                                     <p class="mb-0">Price Not found</p>
                                 @endif
+                                    @auth()
+                                    <button onclick="like({{ $course->id }})" id="button" class="button">
 
                                 <svg class="heart-11" xmlns="http://www.w3.org/2000/svg" width="23.905" height="21.105"
                                     viewBox="0 0 23.905 21.105">
-                                    <path class="heart-22 " data-name="Icon feather-heart"
+                                    <path class="{{ in_array($course->id, $like) ? 'heart-22 add-fill' : 'heart-22 ' }}" data-name="Icon feather-heart"
                                         d="M22.539,6.186a5.764,5.764,0,0,0-8.153,0L13.275,7.3,12.164,6.186a5.765,5.765,0,1,0-8.153,8.153L5.122,15.45,13.275,23.6l8.153-8.153,1.111-1.111a5.764,5.764,0,0,0,0-8.153Z"
                                         transform="translate(-1.323 -3.497)" fill="none" stroke="#9f007e"
                                         stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
                                 </svg>
+                                    </button>
+                                    @endauth
+
+
                             </div>
                             <form action="{{ route('addToCart') }}" method="POST">
                                 @csrf
@@ -761,5 +767,27 @@
             return  document.getElementById("r").value=count;
         }
 
+    </script>
+    <script>
+        function like(id) {
+            // $('#formlike').submit(function(e){
+            // const like=$('#inputlike'+id).val('1');
+            $.ajax({
+                type: 'post',
+                url: '{{ route('courseLike') }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    // like:like,
+                    course: id
+                },
+                success: function(res) {
+                    $('#inputlike' + id).val('0');
+                },
+                error: function(data) {
+                    console.log('Error:', data);
+                }
+            })
+        }
+        // )}
     </script>
 @endsection

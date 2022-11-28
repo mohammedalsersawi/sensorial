@@ -119,7 +119,8 @@ class CourseController extends Controller
             $course_inst = $course->instructor->id;
             $instructors = Instructor::where('id', '<>', $course_inst)->get();
             $categories = Category::all();
-            $users = User::all();            $lectures = Lecture::where('course_id', '=', $id)->get();
+            $users = User::all();
+            $lectures = Lecture::where('course_id', '=', $id)->get();
             $quizzes = Quiz::where('course_id', '=', $id)->get();
             $learns = Learn::where('course_id', '=', $id)->get();
             return view('sensorial.dashboard.courses.view-course', compact('course','quizzes','lectures','learns','students', 'users','instructors','categories'));

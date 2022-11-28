@@ -74,7 +74,7 @@
                                                                 </div>
 
                                                                 <br>
-                                                            @endforeach
+
                                                             <br>
                                                             <label for="">Answer:
                                                                 <span style="color: #fff; font-size: 14px;"
@@ -85,7 +85,7 @@
                                                                         Doesn't Answer Yet !
                                                                     @endif
                                                                 </span>
-
+                                                                @endforeach
                                                             </label>
                                                         </div>
                                                         <hr>
