@@ -259,14 +259,16 @@ class CartPageController extends Controller
                 'order_id' => $order->id
             ]);
 
-            Installment::create([
+         $us=   Installment::create([
                 'Paid' => $amount,
                 'user_id' => Auth::id(),
                 'course_id' => $data->course_id,
                 'count_installment' => $count,
                 'due_installments' => $count - 1,
             ]);
-
+            $job = new sendmailjop($us);
+            $job->delay(now()->addSecond(20));
+            $this->dispatch($job);
             toastr()->success('نجحت عملية الشراء');
             return redirect()->route('homeShow');
         } else {
@@ -315,8 +317,8 @@ class CartPageController extends Controller
 
     public function thanks_premium($course_id)
     {
-        $Installments = Installment::where(['user_id' => Auth::id() , 'course_id' => 4])->latest()->first();
-        $CourseUser = CourseUser::where(['user_id' => Auth::id() , 'course_id' => 4])->latest()->first();
+        $Installments = Installment::where(['user_id' => Auth::id() , 'course_id' => 2])->latest()->first();
+        $CourseUser = CourseUser::where(['user_id' => Auth::id() , 'course_id' => 2])->latest()->first();
         $amount = round($Installments->Paid, 2);
         $resourcePath = request()->resourcePath;
         $url = "https://eu-test.oppwa.com/$resourcePath";

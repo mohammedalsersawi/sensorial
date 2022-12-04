@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Pages;
 
+use App\Models\CourseUser;
 use App\Models\User;
 use App\Models\Course;
-use App\Models\Student;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class CustomerPageController extends Controller
@@ -15,8 +14,10 @@ class CustomerPageController extends Controller
     {
         $customer = User::findOrFail($id);
         $auth = auth()->user()->id;
-        $courses = Student::where('user_id','=', $auth)->where('status',1)->get();
-        $coursesShow =  Course::orderBy('created_at', 'DESC')->get();
+        $courses = CourseUser::where('user_id','=', $auth)->where('status',1)->get();
+
+        $coursesShow =  Course::whereNotIn('id',$courses->pluck('course_id')->toArray())->orderBy('created_at', 'DESC')->get();
+
         return view('sensorial.pages.customer.customer', compact('customer', 'courses', 'coursesShow'));
     }
 }

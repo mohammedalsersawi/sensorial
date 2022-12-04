@@ -349,7 +349,17 @@
 							<li class="menu-title">
 								<span>Tables</span>
 							</li>
+<<<<<<< HEAD
 
+=======
+                            <li class="submenu">
+                                <a href="#" class=""><i class="las la-bars"></i> <span>Courses</span> <span
+                                        class="menu-arrow"></span></a>
+                                <ul style="display: none;">
+                                    <li><a href="{{ route('course.index') }}">All Courses</a></li>
+                                </ul>
+                            </li>
+>>>>>>> 97cbe830a300fb78ae319a199b1f7a09817304c9
                             <li class="submenu">
                                 <a href="#" class=""><i class="las la-bars"></i> <span>Sections</span> <span
                                         class="menu-arrow"></span></a>

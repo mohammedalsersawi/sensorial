@@ -26,9 +26,20 @@ class LectureController extends Controller
             $courses = Course::all();
             return view('sensorial.dashboard.lectures.index', compact('lectures', 'sections', 'courses'));
         } else {
+<<<<<<< HEAD
             $lectures = Lecture::all();
             $sections = Section::all();
             $courses = Course::all();
+=======
+
+
+
+
+            $courses = Course::where('instructor_id',Auth::guard('instructor')->user()->id)->get();
+            $sections = Section::whereIn('course_id',$courses->pluck('id')->toArray())->get();
+            $lectures = Lecture::whereIn('course_id',$courses->pluck('id')->toArray())->get();
+
+>>>>>>> 97cbe830a300fb78ae319a199b1f7a09817304c9
             return view('sensorial.dashboard.lectures.index_instructor', compact('lectures', 'sections', 'courses'));
         }
     }

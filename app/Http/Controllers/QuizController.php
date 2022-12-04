@@ -22,8 +22,14 @@ class QuizController extends Controller
         $courses = Course::all();
         return view('sensorial.dashboard.quizzes.index', compact('quizzes','courses'));
         }else {
+<<<<<<< HEAD
             $quizzes = Quiz::all();
             $courses = Course::all();
+=======
+            $courses = Course::where('instructor_id',Auth::guard('instructor')->user()->id)->get();
+            $quizzes = Quiz::whereIn('course_id',$courses->pluck('id')->toArray())->get();
+
+>>>>>>> 97cbe830a300fb78ae319a199b1f7a09817304c9
         return view('sensorial.dashboard.quizzes.index_instructor', compact('quizzes','courses'));
         }
     }
@@ -82,7 +88,7 @@ class QuizController extends Controller
     public function show($id)
     {
         //
-        $quiz = Quiz::find($id);
+        $quiz = Quiz::findOrFail($id);
         return view('sensorial.dashboard.quizzes.view-quiz', compact('quiz'));
     }
 

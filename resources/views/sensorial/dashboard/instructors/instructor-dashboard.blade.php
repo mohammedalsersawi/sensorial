@@ -19,6 +19,26 @@
 
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+				<!-- Page Content -->
+                <div class="content container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="welcome-box">
+								<div class="welcome-img">
+									<img alt="" src="assets/img/profiles/avatar-02.jpg">
+								</div>
+								<div class="welcome-det">
+									<h3>Welcome, {{Auth::guard('instructor')->user()->name}}</h3>
+									<p>Monday, 20 May 2019</p>
+								</div>
+							</div>
+						</div>
+					</div>
+=======
+>>>>>>> 97cbe830a300fb78ae319a199b1f7a09817304c9
         <!-- Page Content -->
         <div class="content container-fluid">
             <div class="row">
@@ -29,6 +49,10 @@
                         </div>
                         <div class="welcome-det">
                             <h3>$${{ Auth::guard('instructor')->user() }}</h3>
+<<<<<<< HEAD
+=======
+>>>>>>> 82511ea3f095a3a5a583651525e83e4025894cca
+>>>>>>> 97cbe830a300fb78ae319a199b1f7a09817304c9
 
                             <h3>Welcome</h3>
                             <h3>Welcome</h3>
